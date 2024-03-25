@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<StoreManagement.DTO.AppUserDTO>
+<h1>Management User</h1>
+
+<form asp-action="Add" method="get">
+    <input type="submit" value="Add" class="btn btn-primary" />
+</form>
+<form asp-action="Search" method="post">
+    <div class="form-group">
+        <label for="searchTerm">Search Term:</label>
+        <input type="text" id="searchTerm" name="searchTerm" class="form-control" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name User</th>
+            <th>Address User</th>
+            <th>Email User</th>
+            <th>Address User</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Email</td>
+                <td>@user.Address</td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@user.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

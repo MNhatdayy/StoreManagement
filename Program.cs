@@ -23,13 +23,15 @@ builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 /*builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 */
-//End
 var app = builder.Build();
+//End
 //Seed method
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
@@ -58,5 +60,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Customer",
     pattern: "{area=Customer}/{controller=Order}/{id?}");
-
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
 app.Run();
