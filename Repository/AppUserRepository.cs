@@ -14,24 +14,15 @@ namespace StoreManagement.Repository
         }
         public async Task<AppUser> CreateAsync(AppUser user)
         {
-            var newUser = new AppUser()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                Address = user.Address,
-                PhoneNumber = user.PhoneNumber,
-                RoleId = user.RoleId,
-                Password = user.Password,
-                IsDeleted = false
-            };
-            _context.Add(newUser);
+            
+            _context.AppUsers.Add(user);
             await _context.SaveChangesAsync();
             return user;
         }
 
         public async Task Delete(int id, bool incluDeleted = false)
         {
-            var user = _context.AppUsers.Where(obj => obj.Id == id && incluDeleted).FirstOrDefault();
+            var user = _context.AppUsers.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefault();
             _context.Remove(user);
             await _context.SaveChangesAsync();
         }
@@ -45,8 +36,37 @@ namespace StoreManagement.Repository
 
         public Task<AppUser> GetById(int id, bool incluDeleted = false)
         {
-            var user =  _context.AppUsers.Where(obj => obj.Id == id && incluDeleted).FirstOrDefaultAsync();
+            var user =  _context.AppUsers.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
             return user;
+        }
+
+        public async Task<List<AppUser>> GetByNameAsync(string name)
+        {
+            var list = await _context.AppUsers.Where(obj => obj.Name.Contains(name) && obj.IsDeleted == false).ToListAsync();
+            return list;
+        }
+
+        public async Task<AppUser> UpdateAsync(AppUser appUser, bool incluDeleted = false)
+        {
+            var updateUser = await _context.AppUsers.FirstOrDefaultAsync(obj => obj.Id == appUser.Id && obj.IsDeleted == incluDeleted);
+            if (updateUser != null)
+            {
+                updateUser.Name = appUser.Name;
+                updateUser.Email = appUser.Email;
+                updateUser.Address = appUser.Address;
+                updateUser.PhoneNumber = appUser.PhoneNumber;
+                var role = await _context.Roles.FindAsync(appUser.RoleId);
+                if (role != null)
+                {
+                    updateUser.RoleId = appUser.RoleId;
+                }
+                else
+                {
+                    
+                }
+                await _context.SaveChangesAsync();
+            }
+            return updateUser;
         }
     }
 }

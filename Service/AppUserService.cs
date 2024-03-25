@@ -38,8 +38,21 @@ namespace StoreManagement.Service
 
         public async Task<AppUserDTO> GetByIdAsync(int id, bool incluDeleted = false)
         {
-            var user = await appUserRepository.GetById(id, incluDeleted);
+            var user = await appUserRepository.GetById(id,incluDeleted);
             return _mapper.Map<AppUserDTO>(user);
+        }
+
+        public async Task<List<AppUserDTO>> GetByNameAsync(string name )
+        {
+            var list = await appUserRepository.GetByNameAsync(name);
+            return _mapper.Map<List<AppUserDTO>>(list);
+        }
+
+        public async Task<AppUserDTO> UpdateAsync(AppUserDTO appUserDTO, bool incluDeleted = false)
+        {
+            var appUser = _mapper.Map<AppUser>(appUserDTO);
+            await appUserRepository.UpdateAsync(appUser,incluDeleted);
+            return _mapper.Map<AppUserDTO>(appUser);
         }
     }
 }
