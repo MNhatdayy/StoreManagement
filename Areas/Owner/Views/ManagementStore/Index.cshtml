@@ -7,17 +7,13 @@
 @model IEnumerable<StoreManagement.DTO.StoreDTO>
 
 <h1>Management Store</h1>
-
-<form asp-action="Add" method="get">
-    <input type="submit" value="Add" class="btn btn-primary"/>
-</form>
 <form asp-action="Search" method="post">
     <div class="form-group">
         <label for="searchTerm">Search Term:</label>
         <input type="text" id="searchTerm" name="searchTerm" class="form-control" />
         <input type="submit" value="Search" class="btn btn-primary" />
     </div>
-    
+
 </form>
 <table class="table">
     <thead>
@@ -42,15 +38,14 @@
                 </td>
                 <td>
                     @{
-                        
+
                         var phoneUser = appUser != null ? appUser.PhoneNumber : "No Phone User";
                     }
                     @phoneUser
                 </td>
                 <td>@store.AddressStore</td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@store.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@store.Id">Delete</a>
+                    <a asp-action="Update" asp-route-id="@store.Id">Edit</a>
                 </td>
             </tr>
         }
