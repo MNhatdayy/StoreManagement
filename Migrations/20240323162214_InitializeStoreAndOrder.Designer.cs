@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoreManagement.Data;
 
@@ -11,9 +12,10 @@ using StoreManagement.Data;
 namespace StoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240323162214_InitializeStoreAndOrder")]
+    partial class InitializeStoreAndOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,45 +60,13 @@ namespace StoreManagement.Migrations
                     b.ToTable("AppUsers");
                 });
 
-
-            modelBuilder.Entity("StoreManagement.Models.FoodCategory", b =>
-
             modelBuilder.Entity("StoreManagement.Models.Order", b =>
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FoodCategories");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.FoodItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FoodCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -110,25 +80,9 @@ namespace StoreManagement.Migrations
                     b.Property<decimal>("Incurred")
                         .HasColumnType("decimal(18,2)");
 
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodCategoryId");
-
-                    b.ToTable("FoodItems");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.Menu", b =>
                     b.Property<DateTime>("PayTime")
                         .HasColumnType("datetime2");
 
@@ -152,39 +106,7 @@ namespace StoreManagement.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Menus");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.MenuDetail", b =>
-                {
-                    b.Property<int>("FoodItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("FoodItemId", "MenuId");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("MenuDetails");
                     b.Property<int>("IdFood")
                         .HasColumnType("int");
 
@@ -229,8 +151,6 @@ namespace StoreManagement.Migrations
                     b.ToTable("Roles");
                 });
 
-
-            modelBuilder.Entity("StoreManagement.Models.Table", b =>
             modelBuilder.Entity("StoreManagement.Models.Store", b =>
                 {
                     b.Property<int>("Id")
@@ -239,19 +159,12 @@ namespace StoreManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
                     b.Property<string>("AddressStore")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("StoreID")
                     b.Property<string>("StoreName")
                         .HasColumnType("nvarchar(max)");
 
@@ -260,7 +173,6 @@ namespace StoreManagement.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tables");
                     b.HasIndex("UserId");
 
                     b.ToTable("Stores");
@@ -277,49 +189,6 @@ namespace StoreManagement.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("StoreManagement.Models.FoodItem", b =>
-                {
-                    b.HasOne("StoreManagement.Models.FoodCategory", "FoodCategory")
-                        .WithMany("FoodItems")
-                        .HasForeignKey("FoodCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FoodCategory");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.MenuDetail", b =>
-                {
-                    b.HasOne("StoreManagement.Models.FoodItem", "FoodItem")
-                        .WithMany("MenuDetails")
-                        .HasForeignKey("FoodItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StoreManagement.Models.Menu", "Menu")
-                        .WithMany("MenuDetails")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FoodItem");
-
-                    b.Navigation("Menu");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.FoodCategory", b =>
-                {
-                    b.Navigation("FoodItems");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.FoodItem", b =>
-                {
-                    b.Navigation("MenuDetails");
-                });
-
-            modelBuilder.Entity("StoreManagement.Models.Menu", b =>
-                {
-                    b.Navigation("MenuDetails");
             modelBuilder.Entity("StoreManagement.Models.Order", b =>
                 {
                     b.HasOne("StoreManagement.Models.Store", "Store")

@@ -24,6 +24,7 @@ builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+
 builder.Services.AddTransient<IMenuDetailRepository, MenuDetailRepository>();
 builder.Services.AddScoped<IMenuDetailService, MenuDetailService>();
 builder.Services.AddTransient<IFoodItemRepository, FoodItemRepository>();
@@ -34,13 +35,17 @@ builder.Services.AddTransient<ITableRepository, TableRepository>();
 builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<IMenuService, MenuService>();
+
+builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 /*builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 */
-//End
 var app = builder.Build();
+//End
 //Seed method
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
@@ -69,5 +74,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Customer",
     pattern: "{area=Customer}/{controller=Order}/{id?}");
-
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
 app.Run();
