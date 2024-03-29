@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <Folder Include="Areas\Owner\Data\" />
+    <Folder Include="Areas\Owner\Models\" />
+
     <Folder Include="wwwroot\images\food\lau\" />
     <Folder Include="wwwroot\images\food\nuoc\" />
 
