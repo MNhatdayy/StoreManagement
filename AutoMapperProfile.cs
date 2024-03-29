@@ -13,7 +13,11 @@ namespace StoreManagement
             CreateMap<AppUser, LoginDTO>().ForMember(h=>h.Email,opt => opt.MapFrom(src => src.Email))
                                           .ForMember(h => h.Password, opt => opt.MapFrom(src => src.Password)).ReverseMap();
             
-
+            CreateMap<Table, TableDTO>().ReverseMap();
+            CreateMap<Menu, MenuDTO>().ReverseMap();
+            CreateMap<FoodCategory, FoodCategoryDTO>().ReverseMap();
+            CreateMap<FoodItem, FoodItemDTO>().ReverseMap();
+            CreateMap<MenuDetail, MenuDetailDTO>().ReverseMap();
         }
     }
 }

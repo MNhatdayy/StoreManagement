@@ -2,8 +2,52 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "FoodItem";
 }
-management food
+@* management food
 
 Một cái grid view hiển thị các đồ ăn, có CRUD 
--> CRUD sẽ vào các route để Add/Create/Edit/Delete
+-> CRUD sẽ vào các route để Add/Create/Edit/Delete *@
+@model IEnumerable<StoreManagement.DTO.FoodItemDTO>
+
+<div class="container">
+    <a asp-action="Create">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </a>|
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Picture</th>
+                <th>FoodCategory</th>
+                <th>Actions</th>
+                <!-- Add other columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var foodItem in Model)
+            {
+                <tr>
+                    <td>@foodItem.Id</td>
+                    <td>@foodItem.Name</td>
+                    <td>@foodItem.Price</td>
+                    <td>@foodItem.Description</td>
+                    <td width="15%"><img width="100%" src="@foodItem.ImageUrl" /></td>
+                    <td width="15%">@foodItem.FoodCategory?.Name</td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@foodItem.Id">
+                            <button type="submit" class="btn btn-info">Edit</button>
+                        </a> |
+                        <a asp-action="Delete" asp-route-id="@foodItem.Id">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
