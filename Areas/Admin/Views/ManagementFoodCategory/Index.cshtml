@@ -1,15 +1,9 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model IEnumerable<StoreManagement.DTO.FoodCategoryDTO>
 @{
-}
-@* Management table
-
-CRUD bàn của quán *@
-
-@model IEnumerable<StoreManagement.DTO.TableDTO>
-@{
-    ViewData["Title"] = "Table";
+    ViewData["Title"] = "FoodCategory";
 }
 <div class="container">
     <a asp-action="Create">
@@ -19,26 +13,22 @@ CRUD bàn của quán *@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Status</th>
-                <th>Create Time</th>
-                <th>StoreID</th>
+                <th>Name</th>
                 <th>Actions</th>
                 <!-- Add other columns as needed -->
             </tr>
         </thead>
         <tbody>
-            @foreach (var table in Model)
+            @foreach (var foodCategory in Model)
             {
                 <tr>
-                    <td>@table.Id</td>
-                    <td>@table.Status</td>
-                    <td>@table.CreateTime</td>
-                    <td>@table.StoreID</td>
+                    <td>@foodCategory.Id</td>
+                    <td>@foodCategory.Name</td>
                     <td>
-                        <a asp-action="Update" asp-route-id="@table.Id">
+                        <a asp-action="Update" asp-route-id="@foodCategory.Id">
                             <button type="submit" class="btn btn-info">Edit</button>
                         </a> |
-                        <a asp-action="Delete" asp-route-id="@table.Id">
+                        <a asp-action="Delete" asp-route-id="@foodCategory.Id">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </a>
                     </td>

@@ -23,8 +23,22 @@ builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
+=======
+
+builder.Services.AddTransient<IMenuDetailRepository, MenuDetailRepository>();
+builder.Services.AddScoped<IMenuDetailService, MenuDetailService>();
+builder.Services.AddTransient<IFoodItemRepository, FoodItemRepository>();
+builder.Services.AddScoped<IFoodItemService, FoodItemService>();
+builder.Services.AddTransient<IFoodCategoryRepository, FoodCategoryRepository>();
+builder.Services.AddScoped<IFoodCategoryService, FoodCategoryService>();
+builder.Services.AddTransient<ITableRepository, TableRepository>();
+builder.Services.AddScoped<ITableService, TableService>();
+builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<IMenuService, MenuService>();
+>>>>>>> ad7998dbcf9db7311fa075da5d8a1ef96d6a9d86
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 /*builder.Services.AddMemoryCache();
 builder.Services.AddSession();
