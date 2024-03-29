@@ -18,13 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
+
     <Folder Include="Areas\Owner\Data\" />
     <Folder Include="Areas\Owner\Models\" />
-=======
+
     <Folder Include="wwwroot\images\food\lau\" />
     <Folder Include="wwwroot\images\food\nuoc\" />
->>>>>>> ad7998dbcf9db7311fa075da5d8a1ef96d6a9d86
+
+    <Folder Include="Areas\Owner\Data\" />
+    <Folder Include="Areas\Owner\Models\" />
+
   </ItemGroup>
 
 </Project>
