@@ -25,9 +25,5 @@ namespace StoreManagement.Data
                   .HasKey(m => new { m.FoodItemId, m.MenuId });
         }
 
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
-
     }
 }
