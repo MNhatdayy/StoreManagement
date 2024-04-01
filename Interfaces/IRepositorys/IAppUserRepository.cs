@@ -8,5 +8,7 @@ namespace StoreManagement.Interfaces.IRepositorys
         Task<List<AppUser>> GetAll();
         Task<AppUser> GetById(int id, bool incluDeleted = false);
         Task Delete(int id, bool incluDeleted = false);
+        Task<AppUser> UpdateAsync(AppUser appUser, bool incluDeleted = false);
+        Task<List<AppUser>> GetByNameAsync(string name);
     }
 }
