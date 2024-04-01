@@ -1,3 +1,9 @@
+:root {
+    --primary-color: #C40414;
+    --text-color: white;
+    --second-color: #E72434;
+}
+
 html {
   font-size: 14px;
 }
@@ -19,6 +25,23 @@ body {
     height: 100vh;
 }
 
-.nav-link:hover {
-    background-color: red;
+a {
+    text-decoration: none
 }
+
+.bg-gradient-custom {
+    background-color: #FF3CAC;
+    background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+}
+
+.btn-primay-custom {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    transition: 0.2s ease-in-out;
+}
+
+    .btn-primay-custom:hover {
+        transform: scale(102%);
+        background-color: var(--second-color);
+        color: var(--text-color);
+    }

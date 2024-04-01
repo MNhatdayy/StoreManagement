@@ -1,4 +1,6 @@
-﻿namespace StoreManagement.Models
+﻿using System.Collections.ObjectModel;
+
+namespace StoreManagement.Models
 {
     public class MenuDetail
     {
@@ -7,6 +9,6 @@
         public int MenuId { get; set; }
         public virtual Menu Menu { get; set; }
         public int FoodItemId { get; set; }
-        public virtual FoodItem FoodItem { get; set; }
+        public virtual FoodItem FoodItems { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using StoreManagement.Models;
 using System.Diagnostics;
 
-namespace StoreManagement.Controllers
+namespace StoreManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller

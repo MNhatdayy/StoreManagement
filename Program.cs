@@ -40,7 +40,7 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
-
+builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 /*builder.Services.AddMemoryCache();
 builder.Services.AddSession();
@@ -77,6 +77,9 @@ app.MapControllerRoute(
     name: "Customer",
     pattern: "{area=Customer}/{controller=Order}/{id?}");
 app.MapControllerRoute(
-    name: "areas",
+    name: "Owner",
     pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 app.Run();

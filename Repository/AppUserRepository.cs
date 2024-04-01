@@ -36,7 +36,7 @@ namespace StoreManagement.Repository
 
         public Task<AppUser> GetById(int id, bool incluDeleted = false)
         {
-            var user =  _context.AppUsers.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
+            var user =  _context.AppUsers.FirstOrDefaultAsync(obj => obj.Id == id && obj.IsDeleted == incluDeleted);
             return user;
         }
 

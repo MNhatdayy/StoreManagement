@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@* Management table
+
+CRUD bàn của quán *@
+
+@model IEnumerable<StoreManagement.DTO.TableDTO>
+@{
+    ViewData["Title"] = "Table";
+}
+<div class="container">
+    <a asp-action="Create">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </a>|
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Create Time</th>
+                <th>StoreID</th>
+                <th>Actions</th>
+                <!-- Add other columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var table in Model)
+            {
+                <tr>
+                    <td>@table.Id</td>
+                    <td>@table.Status</td>
+                    <td>@table.CreateTime</td>
+                    <td>@table.StoreID</td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@table.Id">
+                            <button type="submit" class="btn btn-info">Edit</button>
+                        </a> |
+                        <a asp-action="Delete" asp-route-id="@table.Id">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

@@ -10,6 +10,6 @@ namespace StoreManagement.Models
         public string ImageUrl { get; set; }
         public int FoodCategoryId { get; set; }
         public virtual FoodCategory FoodCategory { get; set; }
-        public virtual Collection<MenuDetail> MenuDetails { get; set; }
+        public virtual ICollection<MenuDetail> MenuDetails { get; set; }
     }
 }

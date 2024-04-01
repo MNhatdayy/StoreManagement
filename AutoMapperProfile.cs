@@ -14,7 +14,7 @@ namespace StoreManagement
                                           .ForMember(h => h.Password, opt => opt.MapFrom(src => src.Password)).ReverseMap();
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Store, StoreDTO>().ReverseMap();
-            CreateMap<OrderDetails, OrderDetailsDTO>().ReverseMap();
+            CreateMap<OrderDetail, OrderDetailsDTO>().ReverseMap();
             
             CreateMap<Table, TableDTO>().ReverseMap();
             CreateMap<Menu, MenuDTO>().ReverseMap();
@@ -24,7 +24,7 @@ namespace StoreManagement
 
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Store, StoreDTO>().ReverseMap();
-            CreateMap<OrderDetails, OrderDetailsDTO>().ReverseMap();
+            CreateMap<OrderDetail, OrderDetailsDTO>().ReverseMap();
 
         }
     }
