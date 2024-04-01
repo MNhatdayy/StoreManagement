@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace StoreManagement.Areas.Admin.Controllers
+namespace StoreManagement.Areas.Owner.Controllers
 {
-    public class ManagementInvoiceController : Controller
+    public class ManagementOrderController : Controller
     {
-        [Area("Admin")]
+        [Area("Owner")]
         public IActionResult Index()
         {
             return View();

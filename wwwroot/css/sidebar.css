@@ -1,0 +1,22 @@
+﻿body {
+}
+
+.nav-item {
+    border-radius: 8px;
+    transition: 0.2s ease-in;
+}
+
+.nav-item:hover {
+    background-color: palevioletred;
+    transform: translateX(15px);
+    color: black;
+}
+
+.nav-item.active-item {
+   background-color: palevioletred;
+   transform: translateX(10px);
+   color: black;
+}
+.nav-item {
+    font-weight: 500;
+}

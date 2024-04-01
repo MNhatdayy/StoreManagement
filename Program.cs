@@ -79,4 +79,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Owner",
     pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 app.Run();

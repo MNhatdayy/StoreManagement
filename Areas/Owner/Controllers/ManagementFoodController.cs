@@ -8,9 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Net.WebSockets;
 
-namespace StoreManagement.Areas.Admin.Controllers
+namespace StoreManagement.Areas.Owner.Controllers
 {
-    [Area("Admin")]
+    [Area("Owner")]
     public class ManagementFoodController : Controller
     {
         public readonly IFoodItemService _foodItemService;

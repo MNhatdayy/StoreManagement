@@ -7,25 +7,60 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/StoreManagement.styles.css" asp-append-version="true" />
 </head>
 <body>
     <div class="container-fluid vh-100">
         <div class="row h-100">
             <div class="col-lg-2 px-0">
-                <div class="d-flex flex-column flex-shrink-0 px-3 text-white bg-dark" style="height: 100%;">
-                    <a href="/admin/home" class="d-flex align-items-center gap-4 text-white text-decoration-none text-center w-100">
+                <div class="d-flex flex-column flex-shrink-0 px-3 text-white bg-gradient-custom" style="height: 100%;">
+                    <a href="/owner/home" class="d-flex align-items-center gap-4 text-white text-decoration-none text-center w-100 mt-2">
                         <i class='bx bx-menu fs-3'></i>
-
                         <span class="fs-4">Quản lý</span>
                     </a>
 
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="/owner/ManagementStore" class="nav-link text-white" aria-current="page">
-
-                                Quản lý quán
+                            <a href="/owner/ManagementStore" class="nav-link text-white d-flex align-items-center gap-2" aria-current="page">
+                                <i class='bx bxs-store-alt'></i>Quản lý quán
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementTable" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bx-layer'></i>Quản lý bàn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementMenu" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bxs-food-menu'></i>
+                                Quản lý menu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementFood" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bxs-dish'></i>
+                                Quản lý đồ ăn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementFoodCategory" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bxs-category'></i>
+                                Quản lý loại đồ ăn
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementOrder" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bx-cart-download'></i>
+                                Đơn đặt hàng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/owner/ManagementInvoice" class="nav-link text-white d-flex align-items-center gap-2">
+                                <i class='bx bx-align-left'></i>
+                                Lịch sử hóa đơn
                             </a>
                         </li>
                     </ul>

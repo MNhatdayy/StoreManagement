@@ -4,11 +4,9 @@ using StoreManagement.Interfaces.IServices;
 
 namespace StoreManagement.Controllers
 {
-    [Area("Admin")]
     public class AuthController : Controller
     {
         private readonly IAuthenticationService _authService;
-
 
         public AuthController(IAuthenticationService authenticationService)
         {
@@ -24,6 +22,7 @@ namespace StoreManagement.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();

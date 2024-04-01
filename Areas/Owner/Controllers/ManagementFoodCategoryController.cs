@@ -3,9 +3,9 @@ using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Service;
 
-namespace StoreManagement.Areas.Admin.Controllers
+namespace StoreManagement.Areas.Owner.Controllers
 {
-    [Area("Admin")]
+    [Area("Owner")]
     public class ManagementFoodCategoryController : Controller
     {
         public readonly IFoodCategoryService _foodCategoryService;

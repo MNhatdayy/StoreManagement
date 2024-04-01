@@ -9,6 +9,6 @@ namespace StoreManagement.Models
 
         public int StoreId { get; set; }
         public virtual Store Store { get; set; }
-        public virtual Collection<MenuDetail> MenuDetails { get; set; }
+        public virtual ICollection<MenuDetail> MenuDetails { get; set; }
     }
 }
