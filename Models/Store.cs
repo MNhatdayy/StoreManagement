@@ -8,8 +8,9 @@ namespace StoreManagement.Models
         public string AddressStore { get; set; }
         public int UserId { get; set; }
         public AppUser User { get; set; }
-        public virtual Collection<Menu> Menus { get; set; }
-        public virtual Collection<Table> Tables { get; set; }
+        public virtual ICollection<FoodCategory> FoodCategories { get; set; }
+        public virtual ICollection<Menu> Menus { get; set; }
+        public virtual ICollection<Table> Tables { get; set; }
 
     }
 }

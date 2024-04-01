@@ -21,7 +21,7 @@ namespace StoreManagement.Data
                         new Role()
                         {
 
-                            Name = "Staff",
+                            Name = "Owner",
                         },
                         new Role()
                         {
@@ -32,7 +32,7 @@ namespace StoreManagement.Data
                     context.SaveChanges();
                 }
                 var a = context.Roles.Where(obj => obj.Name.Equals("Admin")).Select(obj => obj.Id).FirstOrDefault();
-                var b = context.Roles.Where(obj => obj.Name.Equals("Staff")).Select(obj => obj.Id).FirstOrDefault();
+                var b = context.Roles.Where(obj => obj.Name.Equals("Owner")).Select(obj => obj.Id).FirstOrDefault();
                 var c = context.Roles.Where(obj => obj.Name.Equals("Customer")).Select(obj => obj.Id).FirstOrDefault();
                 if (!context.AppUsers.Any())
                 {
@@ -72,13 +72,20 @@ namespace StoreManagement.Data
                     });
                     context.SaveChanges();
                 }
+                if (!context.Stores.Any())
+                {
+                    context.Stores.AddRange(new List<Store>
+                    {
+                        new Store {StoreName = "Gogi", UserId = 2, AddressStore = "Bình Dương", IsDeleted = false},
+                    });
+                }
                 /*if (!context.FoodCategories.Any())
                 {
                     context.FoodCategories.AddRange(new List<FoodCategory>
                     {
-                        new FoodCategory { Name = "Đồ nướng" ,IsDeleted = false},
-                        new FoodCategory { Name = "Lẩu" ,IsDeleted = false },
-                        new FoodCategory { Name = "Nước ngọt" ,IsDeleted = false },
+                        new FoodCategory { Name = "Đồ nướng" , StoreId = 1, IsDeleted = false},
+                        new FoodCategory { Name = "Lẩu" , StoreId = 1, IsDeleted = false },
+                        new FoodCategory { Name = "Nước ngọt" , StoreId = 1, IsDeleted = false },
                     });
                     context.SaveChanges();
                 }
@@ -181,8 +188,8 @@ namespace StoreManagement.Data
                         },
                     });
                     context.SaveChanges();
-                }*/
-                /*if (!context.Menus.Any())
+                }
+                if (!context.Menus.Any())
                 {
                     var foodItem1 = context.FoodItems.Where(obj => obj.Name.Equals("Bò nướng")).Select(obj => obj.Id).FirstOrDefault();
                     var foodItem2 = context.FoodItems.Where(obj => obj.Name.Equals("Heo nướng")).Select(obj => obj.Id).FirstOrDefault();
@@ -200,75 +207,12 @@ namespace StoreManagement.Data
                         new Menu()
                         {
                             CreateTime = DateTime.Now,
-                            FoodItemId = foodItem1,
                             StoreId = 1,
                             IsDeleted = false,
                         },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem2,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem3,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem4,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem5,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem6,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem7,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem8,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem9,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                        new Menu()
-                        {
-                            UpdateTime = DateTime.Now,
-                            FoodItemId = foodItem10,
-                            StoreId = 1,
-                            IsDeleted = false,
-                        },
-                    });*/
-                    /*context.SaveChanges();
+                        
+                    });
+                    context.SaveChanges();
                 }*/
 
             }

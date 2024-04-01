@@ -22,10 +22,19 @@ namespace StoreManagement.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MenuDetail>()
-                  .HasKey(m => new { m.FoodItemId, m.MenuId });
+                 .HasKey(m => new { m.FoodItemId, m.MenuId });
 
             modelBuilder.Entity<OrderDetail>()
                 .HasKey(m=> new { m.OderId, m.FoodId });
+
+            modelBuilder.Entity<FoodCategory>()
+                .HasOne(fc => fc.Store)
+                .WithMany(s => s.FoodCategories)
+                .HasForeignKey(fc => fc.StoreId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /*modelBuilder.Entity<Order>()
+                .HasOne<Invoice>();*/
         }
 
     }

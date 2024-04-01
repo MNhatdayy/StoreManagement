@@ -5,9 +5,9 @@ using StoreManagement.DTO.AuthDTO;
 using StoreManagement.Interfaces.IServices;
 using System.Net;
 
-namespace StoreManagement.Areas.Admin.Controllers
+namespace StoreManagement.Areas.Owner.Controllers
 {
-    [Area("Admin")]
+    [Area("Owner")]
     public class ManagementTableController : Controller
     {
 

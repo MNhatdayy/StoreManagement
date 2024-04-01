@@ -6,19 +6,29 @@
 }
 @model IEnumerable<StoreManagement.DTO.StoreDTO>
 
-<h1>Management Store</h1>
-
-<form asp-action="Add" method="get">
-    <input type="submit" value="Add" class="btn btn-primary"/>
-</form>
-<form asp-action="Search" method="post">
-    <div class="form-group">
-        <label for="searchTerm">Search Term:</label>
-        <input type="text" id="searchTerm" name="searchTerm" class="form-control" />
-        <input type="submit" value="Search" class="btn btn-primary" />
+<div class="management-store--wrapper">
+    <header>
+        <h1 class="text-center">Quản lý cửa hàng</h1>
+    </header>
+    <div class="store-action">
+        <div class="action-search">
+            <form asp-action="Search" method="post">
+                <div class="form-group w-100">
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="text" id="searchTerm" name="searchTerm" class="form-control w-75" />
+                        <button type="submit" class="btn btn-primay-custom d-flex gap-2 align-items-center"><i class='bx bx-search-alt-2'></i> <span class="w-100">Tìm kiếm cửa hàng</span></button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+        <div class="action-add">
+            <a asp-action="Add" class="btn btn-primay-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm cửa hàng</span></a>
+        </div>
     </div>
-    
-</form>
+
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -56,3 +66,22 @@
         }
     </tbody>
 </table>
+
+
+
+
+<style>
+    .store-action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+    }
+    .action-search {
+        width: 800px;
+    }
+
+    .store-action button {
+        min-width: 100px;
+    }
+</style>

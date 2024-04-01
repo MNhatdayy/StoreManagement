@@ -5,9 +5,9 @@ using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
 using StoreManagement.Service;
 
-namespace StoreManagement.Areas.Admin.Controllers
+namespace StoreManagement.Areas.Owner.Controllers
 {
-    [Area("Admin")]
+    [Area("Owner")]
     public class ManagementMenuDetailController : Controller
     {
         private readonly IMenuDetailService _menuDetailService;
