@@ -4,6 +4,7 @@
     {
         public DateTime CreateTime { get; set; } = DateTime.Now;
         public bool Status { get; set; }
-        public int StoreID { get; set; }
+        public int StoreID {  get; set; }
+        public Store Store { get; set; }
     }
 }

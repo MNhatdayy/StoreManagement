@@ -13,7 +13,7 @@ namespace StoreManagement.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuDetail> MenuDetails { get; set; }
@@ -23,6 +23,9 @@ namespace StoreManagement.Data
         {
             modelBuilder.Entity<MenuDetail>()
                   .HasKey(m => new { m.FoodItemId, m.MenuId });
+
+            modelBuilder.Entity<OrderDetail>()
+                .HasKey(m=> new { m.OderId, m.FoodId });
         }
 
     }

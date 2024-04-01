@@ -9,6 +9,7 @@ namespace StoreManagement.Models
         public int UserId { get; set; }
         public AppUser User { get; set; }
         public virtual Collection<Menu> Menus { get; set; }
+        public virtual Collection<Table> Tables { get; set; }
 
     }
 }

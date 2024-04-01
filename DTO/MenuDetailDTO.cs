@@ -8,8 +8,6 @@ namespace StoreManagement.DTO
         public DateTime UpdateTime { get; set; }
         public int Status { get; set; } = 1;
         public int MenuId { get; set; }
-        public MenuDTO Menu { get; set; }
         public int FoodItemId { get; set; }
-        public FoodItemDTO FoodItem { get; set; }
     }
 }
