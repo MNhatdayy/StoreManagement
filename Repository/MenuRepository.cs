@@ -54,7 +54,7 @@ namespace StoreManagement.Repository
         {
             if (!incluDeleted)
             {
-                return await _context.Menus.Where(m => !m.IsDeleted).ToListAsync();
+                return await _context.Menus.Where(m => !m.IsDeleted).Include("Store").ToListAsync();
             }
             else
             {

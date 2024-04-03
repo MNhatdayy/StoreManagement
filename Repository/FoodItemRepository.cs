@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoreManagement.Data;
-using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Models;
-using System.Net.WebSockets;
 
 namespace StoreManagement.Repository
 {
@@ -73,6 +71,7 @@ namespace StoreManagement.Repository
         {
             return await _context.FoodItems.Include("FoodCategory").FirstOrDefaultAsync(x => x.Id == id);
         }
+
         public async Task<string> SaveImage(string url, IFormFile uFile)
         {
             if (uFile != null && uFile.Length >0)
@@ -84,7 +83,6 @@ namespace StoreManagement.Repository
                     await uFile.CopyToAsync(fileStream);
                 }
                 return "/images/food/donuong/" + url;
-
             }
             return "/images/food/donuong/" + url; 
         }

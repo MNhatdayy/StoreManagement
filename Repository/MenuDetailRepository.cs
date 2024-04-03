@@ -47,7 +47,8 @@ namespace StoreManagement.Repository
         public async Task<List<MenuDetail>> GetAll()
         {
             return await _context.MenuDetails
-                .Include("FoodItem.FoodCategory")
+                .Include("FoodItems")
+                .Include("FoodItems.FoodCategory")
                 .ToListAsync();
         }
 
@@ -61,7 +62,7 @@ namespace StoreManagement.Repository
         {
             return await _context.MenuDetails
                 .Where(md => md.MenuId == menuId)
-                .Include("FoodItem.FoodCategory")
+                .Include("FoodItems.FoodCategory")
                 .Include("Menu")
                 .ToListAsync();
         }

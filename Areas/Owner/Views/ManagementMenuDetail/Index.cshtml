@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "MenuDetail";
 }
-@model IEnumerable<StoreManagement.Models.MenuDetail>
+@model IEnumerable<StoreManagement.DTO.MenuDetailDTO>
 <div class="container">
     <table class="table">
         <thead>
@@ -22,12 +22,12 @@
         <tbody>
             @foreach (var menuDetail in Model)
             {
-                @* <tr>
-                    <td>@menuDetail.FoodItem?.Name</td>
-                    <td>@menuDetail.FoodItem?.Price</td>
-                    <td>@menuDetail.FoodItem?.Description</td>
-                    <td width="15%"><img width="100%" src="@menuDetail.FoodItem.ImageUrl" /></td>
-                    <td>@(menuDetail.FoodItem?.FoodCategory?.Name)</td>
+                <tr>
+                    <td>@menuDetail.FoodItems.Name</td>
+                    <td>@menuDetail.FoodItems.Price</td>
+                    <td>@menuDetail.FoodItems.Description</td>
+                    <td width="15%"><img width="100%" src="@menuDetail.FoodItems.ImageUrl" /></td>
+                    <td>@(menuDetail.FoodItems.FoodCategory.Name)</td>
                     <td>@menuDetail.UpdateTime</td>
                     <td>
                         <a asp-action="Update" asp-route-Id="@menuDetail.Id">
@@ -37,7 +37,7 @@
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </a>|
                     </td>
-                </tr> *@
+                </tr>
             }
         </tbody>
     </table>
