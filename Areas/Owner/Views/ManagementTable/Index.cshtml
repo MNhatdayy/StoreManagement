@@ -21,7 +21,7 @@ CRUD bàn của quán *@
                 <th>Id</th>
                 <th>Status</th>
                 <th>Create Time</th>
-                <th>StoreID</th>
+                <th>Name Store</th>
                 <th>Actions</th>
                 <!-- Add other columns as needed -->
             </tr>
@@ -33,7 +33,7 @@ CRUD bàn của quán *@
                     <td>@table.Id</td>
                     <td>@table.Status</td>
                     <td>@table.CreateTime</td>
-                    <td>@table.StoreID</td>
+                    <td>@table.Store?.StoreName</td>
                     <td>
                         <a asp-action="Update" asp-route-id="@table.Id">
                             <button type="submit" class="btn btn-info">Edit</button>

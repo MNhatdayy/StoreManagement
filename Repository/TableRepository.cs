@@ -51,7 +51,7 @@ namespace StoreManagement.Repository
         public async Task<List<Table>> GetAll(bool incluDeleted = false)
         {
             var list = new List<Table>();
-            list = await _context.Tables.ToListAsync();
+            list = await _context.Tables.Include("Store").ToListAsync();
             return list.ToList();
         }
 

@@ -18,7 +18,8 @@ namespace StoreManagement.Repository
         {
             var newFoodCategory = new FoodCategory()
             {
-                Name = foodCategory.Name
+                Name = foodCategory.Name,
+                StoreId = foodCategory.StoreId
             };
             _context.Add(newFoodCategory);
             await _context.SaveChangesAsync();
@@ -44,6 +45,7 @@ namespace StoreManagement.Repository
             }
             foodCategories.Id = id;
             foodCategories.Name = foodCategory.Name;
+            foodCategories.StoreId = foodCategory.StoreId;
             await _context.SaveChangesAsync();
             return foodCategories;
         }
@@ -53,13 +55,13 @@ namespace StoreManagement.Repository
             if (!incluDeleted)
             {
                 var list = new List<FoodCategory>();
-                list = await _context.FoodCategories.Where(m => !m.IsDeleted).ToListAsync();
+                list = await _context.FoodCategories.Where(m => !m.IsDeleted).Include(m => m.Store).ToListAsync();
                 return list.ToList();
             }
             else
             {
                 var list = new List<FoodCategory>();
-                list = await _context.FoodCategories.ToListAsync();
+                list = await _context.FoodCategories.Include(m => m.Store).ToListAsync();
                 return list.ToList();
             }
         }
@@ -67,6 +69,15 @@ namespace StoreManagement.Repository
         public Task<FoodCategory> GetById(int id, bool incluDeleted = false)
         {
             var foodCategory = _context.FoodCategories.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
+            return foodCategory;
+        }
+        public async Task<FoodCategory> GetByFoodItemId(int foodItemId)
+        {
+            var foodCategory = await _context.FoodCategories
+                .Include(fc => fc.FoodItems)
+                .Where(fc => fc.FoodItems.Any(fi => fi.Id == foodItemId))
+                .FirstOrDefaultAsync();
+
             return foodCategory;
         }
     }
