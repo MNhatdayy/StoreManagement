@@ -60,6 +60,16 @@ namespace StoreManagement.Service
             return _mapper.Map<FoodItemDTO>(foodItem);
         }
 
+        public async Task<int?> GetStoreIdByFoodItemId(int foodItemId)
+        {
+            var foodItem = await foodItemRepository.GetById(foodItemId);
+            if (foodItem != null)
+            {
+                return foodItem.FoodCategory?.StoreId;
+            }
+            return null;
+        }
+
         public async Task<string> SaveImages(string url, IFormFile uFile)
         {
             var urlfile = await foodItemRepository.SaveImage(url, uFile);

@@ -13,11 +13,16 @@ namespace StoreManagement.Areas.Owner.Controllers
         private readonly IMenuDetailService _menuDetailService;
         private readonly IMenuService _menuService;
         public readonly IFoodItemService _foodItemService;
-        public ManagementMenuDetailController(IMenuDetailService menuDetailService, IMenuService menuService, IFoodItemService foodItemService)
+        public readonly IFoodCategoryService _foodCategoryService;
+        public ManagementMenuDetailController(IMenuDetailService menuDetailService, 
+            IMenuService menuService, 
+            IFoodItemService foodItemService, 
+            IFoodCategoryService foodCategoryService)
         {
             _menuDetailService = menuDetailService;
             _menuService = menuService;
             _foodItemService = foodItemService;
+            _foodCategoryService = foodCategoryService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -46,9 +51,18 @@ namespace StoreManagement.Areas.Owner.Controllers
         {
             try
             {
+                var foodCategory = await _foodCategoryService.GetAll();
+                var storeId = foodCategory.FirstOrDefault()?.StoreId;
+
+                ViewBag.StoreId = storeId;
+
                 var foodItems = await _foodItemService.GetAll();
-                ViewBag.FoodItems = foodItems.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Name }).ToList();
+                var filteredFoodItems = foodItems.Where(item => foodCategory.Any(fc => fc.Id == item.FoodCategoryId && fc.StoreId == storeId));
+                
+                ViewBag.FoodItems = filteredFoodItems.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Name }).ToList();
+                
                 var menuDetails = await _menuDetailService.GetMenuDetailsByMenuId(menuId);
+                
                 ViewBag.MenuDetails = menuDetails;
                 return View();
             }
@@ -77,7 +91,11 @@ namespace StoreManagement.Areas.Owner.Controllers
                 {
                     return BadRequest("Invalid food ID");
                 }
-
+                var foodCategory = await _foodCategoryService.GetById(fooditem.FoodCategoryId);
+                if (foodCategory == null || foodCategory.StoreId != menu.StoreId)
+                {
+                    return BadRequest("Selected food item does not belong to the store");
+                }
                 var result = await _menuDetailService.AddMenuItem(menuId, foodItemId);
 
                 if (!result)

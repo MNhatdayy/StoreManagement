@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using StoreManagement.Data;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
@@ -11,10 +13,12 @@ namespace StoreManagement.Service
     {
         public readonly IFoodCategoryRepository foodCategoryRepository;
         public readonly IMapper _mapper;
-        public FoodCategoryService(IFoodCategoryRepository foodCategoryRepository, IMapper _mapper) 
+        private readonly IFoodItemRepository foodItemRepository;
+        public FoodCategoryService(IFoodCategoryRepository foodCategoryRepository, IMapper _mapper, IFoodItemRepository foodItemRepository)
         {
             this.foodCategoryRepository = foodCategoryRepository;
             this._mapper = _mapper;
+            this.foodItemRepository = foodItemRepository;
         }
 
         public async Task<FoodCategoryDTO> Create(FoodCategoryDTO foodCategoryDTO)
@@ -38,6 +42,15 @@ namespace StoreManagement.Service
                 return null;
             }
             return _mapper.Map<FoodCategoryDTO>(foodcategory);
+        }
+        public async Task<FoodCategoryDTO> GetByFoodItemId(int foodItemId)
+        {
+            var foodCategory = await foodCategoryRepository.GetByFoodItemId(foodItemId);
+            if (foodCategory == null)
+            {
+                return null; 
+            }
+            return _mapper.Map<FoodCategoryDTO>(foodCategory);
         }
 
         public async Task<List<FoodCategoryDTO>> GetAll()

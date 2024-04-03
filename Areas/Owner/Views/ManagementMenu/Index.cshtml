@@ -18,7 +18,7 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
         <thead>
             <tr>
                 <th>MenuID</th>
-                <th>StoreID</th>
+                <th>Name Store</th>
                 <th>CreateTime</th>
                 <th>Actions</th>
                 <!-- Add other columns as needed -->
@@ -29,7 +29,7 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
             {
                 <tr>
                     <td>@menu.Id</td>
-                    <td>@menu.StoreId</td>
+                    <td>@menu.Store.StoreName</td>
                     <td>@menu.CreateTime</td>
                     <td>
                         <a asp-action="Update" asp-route-id="@menu.Id">
@@ -51,18 +51,3 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
     </table>
 
 </div>
-@* @section scripts {
-    <script>
-        function filterMenu() {
-            var category = document.getElementById("categoryFilter").value;
-            $.ajax({
-                type: "GET",
-                url: "/Menu/GetMenusByCategory?category=" + category,
-                success: function (data) {
-                    $("#menuItems").html(data);
-                }
-            });
-        }
-    </script>
-}
- *@
