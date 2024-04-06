@@ -15,8 +15,9 @@
             <form asp-action="Search" method="post">
                 <div class="form-group w-100">
                     <div class="d-flex align-items-center gap-2">
-                        <input type="text" id="searchTerm" name="searchTerm" class="form-control w-75" />
-                        <button type="submit" class="btn btn-primay-custom d-flex gap-2 align-items-center"><i class='bx bx-search-alt-2'></i> <span class="w-100">Tìm kiếm cửa hàng</span></button>
+                        <div>
+                            <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%" />
+                        </div>
                     </div>
                 </div>
                 
@@ -67,9 +68,6 @@
     </tbody>
 </table>
 
-
-
-
 <style>
     .store-action {
         display: flex;
@@ -85,3 +83,17 @@
         min-width: 100px;
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#txtSearch').keyup(function () {
+            var typeValue = $(this).val();
+            $('tbody tr').each(function () {
+                if ($(this).text().search(new RegExp(typeValue, "i")) < 0) {
+                    $(this).fadeOut();
+                } else {
+                    $(this).show();
+                }
+            })
+        });
+    });
+</script>

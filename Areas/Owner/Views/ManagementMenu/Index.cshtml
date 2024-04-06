@@ -17,7 +17,6 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
     <table class="table">
         <thead>
             <tr>
-                <th>MenuID</th>
                 <th>Name Store</th>
                 <th>CreateTime</th>
                 <th>Actions</th>
@@ -28,7 +27,6 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
             @foreach (var menu in Model)
             {
                 <tr>
-                    <td>@menu.Id</td>
                     <td>@menu.Store.StoreName</td>
                     <td>@menu.CreateTime</td>
                     <td>

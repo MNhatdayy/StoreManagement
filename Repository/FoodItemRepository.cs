@@ -37,15 +37,12 @@ namespace StoreManagement.Repository
             {
                 return null;
             }
-            foodItems.Id = id;
             foodItems.Name = foodItem.Name;
             foodItems.Price = foodItem.Price;
             foodItems.Description = foodItem.Description;
             foodItems.FoodCategory = foodItem.FoodCategory;
-            if (foodItem.ImageUrl != null)
-            {
-                foodItem.ImageUrl = await SaveImage(foodItem.ImageUrl,uFile);
-            }
+            foodItems.ImageUrl = foodItem.ImageUrl;
+
             await _context.SaveChangesAsync();
             return foodItems;
         }

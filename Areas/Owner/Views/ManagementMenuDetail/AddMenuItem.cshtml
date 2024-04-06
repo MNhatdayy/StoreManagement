@@ -3,10 +3,9 @@
 *@
 
 @model IEnumerable<StoreManagement.DTO.FoodItemDTO>
-<h2>Add Menu Item</h2>
 @functions {
     // Hàm kiểm tra xem một món đã tồn tại trong danh sách MenuDetail hay không
-    bool ExistsInMenuDetail(int menuId, int foodItemId,int storeId)
+    bool ExistsInMenuDetail(int menuId, int foodItemId, int storeId)
     {
         foreach (var menuDetail in ViewBag.MenuDetails)
         {
@@ -28,9 +27,11 @@
     var menuId = ViewContext.HttpContext.Request.Query["menuId"];
     var storeId = ViewBag.StoreId;
 }
+<h2>Add Menu Item</h2>
 <form asp-action="AddMenuItem" method="post">
     <div class="form-group">
-        <label for="menuId">Menu ID:</label>
+        <input type="hidden" id="storeId" name="storeId">
+        <label for="menuId">Menu ID</label>
         <input type="text" class="form-control" id="menuId" name="menuId">
     </div>
     <div class="form-group">
@@ -49,6 +50,9 @@
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
+    <a asp-controller="ManagementMenu" asp-action="Index">
+        <button type="button" class="btn btn-info">Return Menu</button>
+    </a>
 </form>
 <script>
     // Lấy giá trị menuId từ URL và điền vào trường input menuId

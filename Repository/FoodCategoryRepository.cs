@@ -71,14 +71,5 @@ namespace StoreManagement.Repository
             var foodCategory = _context.FoodCategories.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
             return foodCategory;
         }
-        public async Task<FoodCategory> GetByFoodItemId(int foodItemId)
-        {
-            var foodCategory = await _context.FoodCategories
-                .Include(fc => fc.FoodItems)
-                .Where(fc => fc.FoodItems.Any(fi => fi.Id == foodItemId))
-                .FirstOrDefaultAsync();
-
-            return foodCategory;
-        }
     }
 }
