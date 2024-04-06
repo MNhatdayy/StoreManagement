@@ -46,6 +46,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 */
+
 var app = builder.Build();
 //End
 //Seed method

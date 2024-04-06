@@ -16,6 +16,13 @@
             <span asp-validation-for="StoreId" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <button asp-action="Index" type="submit" class="btn btn-info">Cancel</button>
+        <a asp-controller="ManagementMenu" asp-action="Index">
+        <button type="button" class="btn btn-info">Return Menu</button>
+    </a>
     </form>
 </div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

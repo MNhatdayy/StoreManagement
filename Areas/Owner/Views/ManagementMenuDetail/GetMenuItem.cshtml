@@ -11,6 +11,12 @@
     <a asp-controller="ManagementMenuDetail" asp-action="AddMenuItem" asp-route-menuId="@ViewBag.MenuId">
         <button type="button" class="btn btn-primary">Add Item</button>
     </a>
+    <a asp-controller="ManagementMenu" asp-action="Index">
+        <button type="button" class="btn btn-primary">Return Menu</button>
+    </a>
+    <div>
+        <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%" />
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -21,14 +27,13 @@
                 <th>Picture</th>
                 <th>FoodCategory</th>
                 <th>Actions</th>
-                <!-- Add other columns as needed -->
             </tr>
         </thead>
         <tbody>
             @foreach (var menuDetail in Model)
             {
                 <tr class="menu-item">
-                    <td><input type="checkbox" class="menu-checkbox" data-menuid="@menuDetail.Id" @(menuDetail.Status == 0 ? "checked" : "")/></td>
+                    <td><input type="checkbox" class="menu-checkbox" data-menuid="@menuDetail.MenuId" data-fooditemid="@menuDetail.FoodItemId" @(menuDetail.Status == 0 ? "checked" : "") data-status="@(menuDetail.Status)" /></td>
                     <td>@menuDetail.FoodItems.Name</td>
                     <td>@menuDetail.FoodItems.Price</td>
                     <td>@menuDetail.FoodItems.Description</td>
@@ -41,12 +46,72 @@
                     </td>
                 </tr>
             }
+                <td colspan="7">
+                    <button type="button" class="btn btn-success save-btn">Save</button>
+                </td>
         </tbody>
     </table>  
 </div>
 <style>
     .menu-checkbox {
-        transform: scale(2); /* Điều chỉnh giá trị scale tùy theo nhu cầu */
+        transform: scale(2); 
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Xử lý sự kiện khi nhấp vào checkbox
+        var checkboxes = document.querySelectorAll('.menu-checkbox');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                var menuId = this.dataset.menuid;
+                // Lưu trạng thái mới vào thuộc tính data-status
+                this.dataset.status = this.checked ? 0 : 1;
+            });
+        });
 
+        // Xử lý sự kiện khi nhấp vào nút "Save"
+        var saveBtn = document.querySelector('.save-btn');
+        saveBtn.addEventListener('click', function () {
+            // Tạo một mảng chứa các cặp menuId và status
+            var updatedStatusList = [];
+            checkboxes.forEach(function (checkbox) {
+                updatedStatusList.push({
+                    menuId: checkbox.dataset.menuid,
+                    foodItemId: checkbox.dataset.fooditemid,
+                    status: checkbox.dataset.status 
+                });
+            });
+            console.log("Updated Status List:", updatedStatusList);
+
+            fetch('/Owner/ManagementMenuDetail/UpdateMenuStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedStatusList)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert("Lưu thành công!");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#txtSearch').keyup(function () {
+            var typeValue = $(this).val();
+            $('tbody tr').each(function () {
+                if ($(this).text().search(new RegExp(typeValue, "i")) < 0) {
+                    $(this).fadeOut();
+                } else {
+                    $(this).show();
+                }
+            })
+        });
+    });
+</script>

@@ -12,5 +12,7 @@
     <input type="hidden" asp-for="FoodItemId" />
     <p>Are you sure you want to delete food with ID : @Model.FoodItemId</p>
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-info">Cancel</a>
+    <a asp-controller="ManagementMenu" asp-action="Index">
+        <button type="button" class="btn btn-info">Return Menu</button>
+    </a>
 </form>

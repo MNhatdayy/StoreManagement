@@ -9,6 +9,9 @@
     <a asp-action="Create">
         <button type="submit" class="btn btn-primary">Add</button>
     </a>|
+    <div>
+        <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%" />
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -38,5 +41,18 @@
             }
         </tbody>
     </table>
-
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#txtSearch').keyup(function () {
+            var typeValue = $(this).val();
+            $('tbody tr').each(function () {
+                if ($(this).text().search(new RegExp(typeValue, "i")) < 0) {
+                    $(this).fadeOut();
+                } else {
+                    $(this).show();
+                }
+            })
+        });
+    });
+</script>
