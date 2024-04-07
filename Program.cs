@@ -1,24 +1,27 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+
 using StoreManagement.Data;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Models;
+
 using StoreManagement.Repository;
 using StoreManagement.Service;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
 //Build services handing in here
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddRazorPages();
+
 builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
 builder.Services.AddScoped<IAppUserService, AppUserService>();
 builder.Services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
@@ -42,10 +45,29 @@ builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-/*builder.Services.AddMemoryCache();
-builder.Services.AddSession();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-*/
+builder.Services.AddMemoryCache();
+builder.Services.AddSession(options =>
+{
+    
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Auth/login";
+    options.LogoutPath = $"/Auth/logout";
+    options.LogoutPath = $"/Auth/login";
+
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    option =>
+    {
+        option.Cookie.Name = "User";
+        option.LoginPath = "/auth/login";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    }
+);
+
 var app = builder.Build();
 //End
 //Seed method
@@ -62,24 +84,36 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapRazorPages();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "Admin",
-    pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Auth}/{action=Login}/{id?}");
 
-app.MapControllerRoute(
-    name: "Customer",
-    pattern: "{area=Customer}/{controller=Order}/{id?}");
-app.MapControllerRoute(
-    name: "Owner",
-    pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=Login}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "Admin",
+        pattern: "{area=Admin}/{controller}/{action}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "Customer",
+        pattern: "{area=Customer}/{controller=Order}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "Owner",
+        pattern: "{area=Owner}/{controller=Home}/{action=Index}/{id?}");
+
+});
+
+
+
 app.Run();

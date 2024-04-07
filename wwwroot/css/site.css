@@ -2,6 +2,9 @@
     --primary-color: #C40414;
     --text-color: white;
     --second-color: #E72434;
+    --blue-gradient: #0081A7;
+    --blue-light-gradient: #00AFB9;
+    --red-gradient: #F07167;
 }
 
 html {
@@ -29,19 +32,38 @@ a {
     text-decoration: none
 }
 
-.bg-gradient-custom {
-    background-color: #FF3CAC;
-    background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+p {
+    margin: 0;
+    padding: 0;
 }
 
-.btn-primay-custom {
-    background-color: var(--primary-color);
+button {
+    min-width: 100px;
+    font-weight: bold;
+}
+
+.bg-gradient-custom {
+    background-color: var(--blue-gradient);
+}
+
+.btn-primary-custom {
+    background-color: var(--blue-light-gradient);
     color: var(--text-color);
     transition: 0.2s ease-in-out;
 }
 
-    .btn-primay-custom:hover {
-        transform: scale(102%);
-        background-color: var(--second-color);
+.btn-primary-custom:hover {
+    background-color: var(--blue-gradient);
+    color: var(--text-color);
+}
+
+.btn-red-custom {
+    background-color: var(--red-gradient);
+    color: var(--text-color);
+    transition: 0.2s ease-in-out;
+}
+
+    .btn-red-custom:hover {
+        background-color: var(--blue-gradient);
         color: var(--text-color);
     }

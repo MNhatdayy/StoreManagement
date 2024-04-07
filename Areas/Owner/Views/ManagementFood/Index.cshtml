@@ -8,9 +8,10 @@
 
 Một cái grid view hiển thị các đồ ăn, có CRUD 
 -> CRUD sẽ vào các route để Add/Create/Edit/Delete *@
-@model IEnumerable<StoreManagement.Models.FoodItem>
+@* @model IEnumerable<StoreManagement.Models.FoodItem> *@
+@model IEnumerable<StoreManagement.DTO.FoodItemDTO>
 
-<div class="container">
+<div class="container h-100">
     <a asp-action="Create">
         <button type="submit" class="btn btn-primary">Add</button>
     </a>|

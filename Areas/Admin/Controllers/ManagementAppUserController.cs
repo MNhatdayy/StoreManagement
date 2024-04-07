@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Service;
+using StoreManagement.Models;
+using System.Security.Claims;
 
 namespace StoreManagement.Areas.Admin.Controllers
 {
+
     [Area("Admin")]
+    [Authorize(Roles = "1")]
+
     public class ManagementAppUserController : Controller
     {
         private readonly IAppUserService _userService;
@@ -16,26 +20,35 @@ namespace StoreManagement.Areas.Admin.Controllers
             _userService = userService;
         }
         [HttpGet]
+
         public async Task<IActionResult> Index()
         {
             var user = await _userService.GetAllAsync();
             return View(user);
         }
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(AppUserDTO userDTO)
+        public async Task<IActionResult> Add(AppUser user)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _userService.CreateAsync(userDTO);
-                return RedirectToAction("Index");
+                // Trả về view với thông báo lỗi validation
+                return View(user);
             }
 
-            return View(userDTO);
+            var exists = await _userService.GetByEmailAsync(user.Email);
+            if (exists != null)
+            {
+                ViewBag.Error = "Người dùng đã tồn tại";
+                return View(user);
+            }
+            await _userService.CreateAsync(user);
+            return Redirect("/admin/managementappuser/index");
+
         }
         [HttpGet]
         public async Task<IActionResult> Update(int id)
@@ -57,7 +70,8 @@ namespace StoreManagement.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _userService.UpdateAsync(userDTO);
-                return RedirectToAction("Index");
+                return Redirect("/admin/managementappuser/index");
+
             }
             return View(userDTO);
         }
@@ -70,11 +84,12 @@ namespace StoreManagement.Areas.Admin.Controllers
             }
             return View(store);
         }
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _userService.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return Redirect("/admin/managementappuser/index");
+
         }
         public async Task<IActionResult> Search(string searchTerm)
         {
@@ -85,5 +100,6 @@ namespace StoreManagement.Areas.Admin.Controllers
             }
             return View(user);
         }
+
     }
 }

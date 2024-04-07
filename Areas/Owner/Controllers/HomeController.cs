@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoreManagement.Models;
 using System.Diagnostics;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "2")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
         [HttpGet]
         public IActionResult Index()
         {

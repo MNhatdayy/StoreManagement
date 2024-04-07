@@ -7,10 +7,7 @@
 @model IEnumerable<StoreManagement.DTO.StoreDTO>
 
 <div class="management-store--wrapper">
-    <header>
-        <h1 class="text-center">Quản lý cửa hàng</h1>
-    </header>
-    <div class="store-action">
+    <div class="actions mt-4">
         <div class="action-search">
             <form asp-action="Search" method="post">
                 <div class="form-group w-100">
@@ -59,8 +56,8 @@
                 </td>
                 <td>@store.AddressStore</td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@store.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@store.Id">Delete</a>
+                    <a asp-action="Update" asp-route-id="@store.Id" class="btn btn-primay-custom">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@store.Id" class="btn btn-primay-custom">Delete</a>
                 </td>
             </tr>
         }
@@ -70,8 +67,9 @@
 
 
 
+
 <style>
-    .store-action {
+    .actions {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -81,7 +79,7 @@
         width: 800px;
     }
 
-    .store-action button {
+    .action button {
         min-width: 100px;
     }
 </style>

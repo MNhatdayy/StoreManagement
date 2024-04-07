@@ -6,11 +6,11 @@ using StoreManagement.Service;
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
-    public class ManagementFoodCategoryController : Controller
+    public class CategoryController : Controller
     {
         public readonly IFoodCategoryService _foodCategoryService;
 
-        public ManagementFoodCategoryController(IFoodCategoryService foodCategoryService)
+        public CategoryController(IFoodCategoryService foodCategoryService)
         {
             this._foodCategoryService = foodCategoryService;
         }
