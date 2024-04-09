@@ -1,0 +1,131 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@* Management table
+
+CRUD bàn của quán *@
+
+@model List<StoreManagement.DTO.TableDTO>
+@{
+    ViewData["Title"] = "Table";
+}
+<div class="container py-4 px-4 h-100">
+    <div class="table-wrapper w-100">
+        <div class="d-flex justify-content-between">
+
+            <p class="fw-bold fs-3">Danh sách bàn</p>
+            <div class="table-action d-flex align-items-center gap-2">
+                <div class="table-filter d-flex gap-2 align-items-center">
+                    <p>Lọc bàn theo: </p>
+                    <div class="filter--wrapper d-flex gap-3 border border-secondary px-2 py-1 rounded-3">
+                        <div class="form-group d-flex align-items-center justify-content-between gap-2">
+                            <label>Bàn bận </label>
+                            <input checked type="checkbox" id="filter--busy" />
+                        </div>
+                        <div class="form-group d-flex align-items-center justify-content-between gap-2">
+                            <label>Bàn trống  </label>
+                            <input checked type="checkbox" id="filter--blank" />
+                        </div>
+                    </div>
+                </div>
+                <a class="btn btn-primary-custom" href="/owner/managementtable/create">Thêm bàn</a>
+            </div>
+
+        </div>
+
+        <div class="row">
+            @foreach (var table in Model)
+            {
+                <div class="col-lg-2 mt-4">
+                    <div class="item-table">
+                        <div class="item-table--img">
+                            <i class='bx bx-archive'></i>
+                        </div>
+                        <div class="item-table--info">
+                            <p>Tên quán: @table.Store?.StoreName</p>
+                            <p>
+                                Trạng thái:
+                                @{
+                                    if (@table.Status)
+                                    {
+                                        <span class="fw-bold text-warning">Bận</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="fw-bold text-success">Còn trống</span>
+                                    }
+                                }
+                            </p>
+                        </div>
+                        <div class="item-table--actions d-flex align-items-center justify-content-center mt-2">
+                            <buton type="buton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-@table.Id">Xóa</buton>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="modal-@table.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Bạn có chắc chắn muốn xóa bàn này không ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <form action="/owner/managementtable/deleteconfirmed" method="post">
+                                    <input value="@table.Id" name="id" class="d-none">
+                                    <button type="submit" class="btn btn-primary-custom">Đồng ý</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .item-table {
+        height: 250px;
+        border: 1px solid black;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        transition: 0.2s ease-in-out;
+    }
+
+        .item-table:hover .item-table--img i {
+            transform: scale(110%);
+        }
+
+    .item-table--img {
+        height: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s ease-in-out;
+    }
+
+        .item-table--img i {
+            font-size: 48px;
+            color: var(--blue-gradient);
+            transition: 0.2s ease-in-out;
+        }
+
+    .item-table--info {
+        border-top: 1px solid var(--blue-gradient);
+        padding-top: 12px;
+        text-align: center;
+    }
+</style>
