@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
-
-    <link rel="stylesheet" href="~/StoreManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
 </head>
 <body>
     <div class="container-fluid vh-100">
@@ -66,21 +65,28 @@
                     </ul>
                     <hr>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                            <strong>admin</strong>
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle py-1 px-2 gap-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class='bx bxs-user'></i>
+                            @{
+                                @using System.Security.Claims;
+                                var username = User.Claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
+                                if (@username != null)
+                                {
+                                    <strong> @username </strong>
+                                }
+                                else
+                                {
+                                    <strong> Username </strong>
+                                }
+                            }
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                            <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-10 bg-white vh-100 d-flex align-items-center justify-content-center">
                 <main role="main" class="w-100 vh-100">
                     @RenderBody()
                 </main>

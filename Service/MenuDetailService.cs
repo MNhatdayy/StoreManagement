@@ -59,7 +59,12 @@ namespace StoreManagement.Service
                 FoodItemId = menuDetail.FoodItemId,
             };
             return menuDetailDTO;
-
         }
+
+        public void UpdateMenuStatus(int menuId, int foodItemId, int status)
+        {
+            menuDetailRepository.UpdateMenuStatus(menuId, foodItemId, status);
+        }
+
     }
 }

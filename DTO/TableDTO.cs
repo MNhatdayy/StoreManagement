@@ -6,6 +6,7 @@
         public DateTime CreateTime { get; set; }
         public bool Status { get; set; }
         public int StoreID { get; set; }
+        public StoreDTO Store { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

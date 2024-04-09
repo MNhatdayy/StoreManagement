@@ -11,10 +11,18 @@
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" class="form-control" required />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="StoreId"></label>
+        <input asp-for="StoreId" class="form-control" />
+        <span asp-validation-for="StoreId" class="text-danger"></span>
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-controller="ManagementFoodCategory" asp-action="Index">
+        <button type="button" class="btn btn-info">Return Menu</button>
+    </a>
 </form>
 @section Scripts{
     @{

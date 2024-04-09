@@ -12,6 +12,7 @@ namespace StoreManagement.Interfaces.IRepositorys
         Task<List<MenuDetail>> GetAll();
         Task<MenuDetail> GetById(int menuId);
         Task Delete(int menuId, int foodItemId);
-        
+        void UpdateMenuStatus(int menuId, int foodItemId, int status);
+
     }
 }

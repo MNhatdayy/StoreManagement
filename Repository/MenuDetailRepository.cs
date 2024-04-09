@@ -8,7 +8,7 @@ namespace StoreManagement.Repository
     public class MenuDetailRepository : IMenuDetailRepository
     {
         readonly ApplicationDbContext _context;
-        public MenuDetailRepository(ApplicationDbContext context) 
+        public MenuDetailRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,7 +27,8 @@ namespace StoreManagement.Repository
                 };
                 _context.MenuDetails.Add(menudetail);
                 await _context.SaveChangesAsync();
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 var innerException = ex.InnerException;
                 Console.WriteLine($"Inner Exception: {innerException.Message}");
@@ -47,13 +48,14 @@ namespace StoreManagement.Repository
         public async Task<List<MenuDetail>> GetAll()
         {
             return await _context.MenuDetails
-                .Include("FoodItem.FoodCategory")
+                .Include("FoodItems")
+                .Include("FoodItems.FoodCategory")
                 .ToListAsync();
         }
 
-        public  Task<MenuDetail> GetById(int menuId)
+        public Task<MenuDetail> GetById(int menuId)
         {
-            var menuDetail =  _context.MenuDetails.FirstOrDefaultAsync(obj => obj.MenuId == menuId); ;
+            var menuDetail = _context.MenuDetails.FirstOrDefaultAsync(obj => obj.MenuId == menuId); ;
             return menuDetail;
         }
 
@@ -61,7 +63,7 @@ namespace StoreManagement.Repository
         {
             return await _context.MenuDetails
                 .Where(md => md.MenuId == menuId)
-                .Include("FoodItem.FoodCategory")
+                .Include("FoodItems.FoodCategory")
                 .Include("Menu")
                 .ToListAsync();
         }
@@ -70,6 +72,22 @@ namespace StoreManagement.Repository
         {
             return await _context.MenuDetails
                 .FirstOrDefaultAsync(md => md.MenuId == menuId && md.FoodItemId == foodItemId);
+        }
+
+        public void UpdateMenuStatus(int menuId, int foodItemId, int status)
+        {
+            var menuDetail = _context.MenuDetails
+                .SingleOrDefault(md => md.MenuId == menuId && md.FoodItemId == foodItemId);
+
+            if (menuDetail != null)
+            {
+                menuDetail.Status = status;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Mục menu không tồn tại hoặc không thể cập nhật.");
+            }
         }
 
     }

@@ -9,5 +9,6 @@ namespace StoreManagement.Interfaces.IRepositorys
         Task<Table> GetById(int id, bool incluDeleted = false);
         Task<Table> Edit(int id ,Table table , bool incluDeleted = false);
         Task Delete(int id, bool incluDeleted = false);
+        Task<List<Table>> GetAllByStoreId(int id);
     }
 }

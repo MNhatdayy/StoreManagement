@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
@@ -11,6 +12,8 @@ using System.Net.WebSockets;
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "2")]
+
     public class ManagementFoodController : Controller
     {
         public readonly IFoodItemService _foodItemService;
@@ -26,7 +29,7 @@ namespace StoreManagement.Areas.Owner.Controllers
             var foodItem = await _foodItemService.GetAll();
             return View(foodItem);
         }
-        [HttpGet]
+        [HttpGet]               
         public async Task<IActionResult> Create()
         {
             var foodCategories = await _foodCategoryService.GetAll();
@@ -89,7 +92,7 @@ namespace StoreManagement.Areas.Owner.Controllers
                 {
                     foodItem.ImageUrl = foodItemDTO.ImageUrl;
                 }
-                if(uFile != null) 
+                if (uFile != null)
                 {
                     foodItemDTO.ImageUrl = await _foodItemService.SaveImages(foodItemDTO.ImageUrl, uFile);
                 }
@@ -104,25 +107,6 @@ namespace StoreManagement.Areas.Owner.Controllers
             ViewBag.FoodCategories = new SelectList(foodCategories,"Id","Name");
             return View(foodItemDTO);
         }
-
-        /*private async Task<string> SaveImage(IFormFile uFile)
-        {
-            if (uFile == null && uFile.Length <= 0)
-            {
-            }
-            // Lấy đường dẫn đến thư mục uploadsFolder trong wwwroot
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "food", "donuong");
-            // Kết hợp đường dẫn thư mục uploadsFolder với tên file duy nhất để tạo đường dẫn đến hình ảnh
-            string filePath = Path.Combine(uploadsFolder);
-            return "/images/food/donuong/" + url;
-            var fileName = Path.GetFileName(uFile.FileName);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", fileName);
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await uFile.CopyToAsync(fileStream);
-            }
-            return filePath;
-        }*/
 
 
         [HttpGet]

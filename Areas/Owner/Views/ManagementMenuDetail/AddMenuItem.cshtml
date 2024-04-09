@@ -3,16 +3,20 @@
 *@
 
 @model IEnumerable<StoreManagement.DTO.FoodItemDTO>
-<h2>Add Menu Item</h2>
 @functions {
     // Hàm kiểm tra xem một món đã tồn tại trong danh sách MenuDetail hay không
-    bool ExistsInMenuDetail(int menuId, int foodItemId)
+    bool ExistsInMenuDetail(int menuId, int foodItemId, int storeId)
     {
         foreach (var menuDetail in ViewBag.MenuDetails)
         {
             if (menuDetail.MenuId == menuId && menuDetail.FoodItemId == foodItemId)
             {
-                return true;
+                var stores = menuDetail.FoodItems.FoodCategory.StoreId;
+                // Kiểm tra xem StoreId của món ăn và StoreId từ ViewBag có giống nhau không
+                if (stores == storeId)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -21,10 +25,13 @@
 @{
     //lấy giá trị của tham số từ URL bằng cách sử dụng ViewContext
     var menuId = ViewContext.HttpContext.Request.Query["menuId"];
+    var storeId = ViewBag.StoreId;
 }
+<h2>Add Menu Item</h2>
 <form asp-action="AddMenuItem" method="post">
     <div class="form-group">
-        <label for="menuId">Menu ID:</label>
+        <input type="hidden" id="storeId" name="storeId">
+        <label for="menuId">Menu ID</label>
         <input type="text" class="form-control" id="menuId" name="menuId">
     </div>
     <div class="form-group">
@@ -33,7 +40,7 @@
             @foreach (var foodItem in ViewBag.FoodItems)
             {
                 // Kiểm tra nếu món đã tồn tại trong danh sách menuDetail
-                var existsInMenuDetail = ExistsInMenuDetail(int.Parse(menuId), int.Parse(foodItem.Value));
+                var existsInMenuDetail = ExistsInMenuDetail(int.Parse(menuId), int.Parse(foodItem.Value), storeId);
                 // Nếu món chưa tồn tại, hiển thị trong dropdown
                 if (!existsInMenuDetail)
                 {
@@ -43,10 +50,13 @@
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
+    <a asp-controller="ManagementMenu" asp-action="Index">
+        <button type="button" class="btn btn-info">Return Menu</button>
+    </a>
 </form>
 <script>
     // Lấy giá trị menuId từ URL và điền vào trường input menuId
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var urlParams = new URLSearchParams(window.location.search);
         var menuId = urlParams.get('menuId');
         document.getElementById('menuId').value = menuId;

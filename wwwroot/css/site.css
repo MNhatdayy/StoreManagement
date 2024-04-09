@@ -8,13 +8,13 @@
 }
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 * {
@@ -52,10 +52,10 @@ button {
     transition: 0.2s ease-in-out;
 }
 
-.btn-primary-custom:hover {
-    background-color: var(--blue-gradient);
-    color: var(--text-color);
-}
+    .btn-primary-custom:hover {
+        background-color: var(--blue-gradient);
+        color: var(--text-color);
+    }
 
 .btn-red-custom {
     background-color: var(--red-gradient);
@@ -67,3 +67,55 @@ button {
         background-color: var(--blue-gradient);
         color: var(--text-color);
     }
+
+
+.management--wrapper {
+    height: 550px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    border-radius: 8px;
+    padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.action-search {
+    width: 800px;
+}
+
+.actions button {
+    min-width: 80px;
+    max-width: 250px;
+}
+
+.action-add {
+}
+
+table {
+    table-layout: fixed;
+}
+
+    table td {
+        white-space: nowrap;
+        overflow: hidden;
+        width: 180px;
+        text-overflow: ellipsis;
+        padding: 4px 8px;
+        height: 55px;
+        line-height: 55px;
+    }
+
+.table-item:hover {
+    background-color: #ECECEC;
+}
+
+.edit--wrapper {
+    width: 80%;
+    height: 300px;
+}

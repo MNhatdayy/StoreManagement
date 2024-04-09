@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 using StoreManagement.Data;
@@ -68,6 +68,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     }
 );
 
+
 var app = builder.Build();
 //End
 //Seed method
@@ -101,7 +102,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Auth}/{action=Login}/{id?}");
-
     endpoints.MapControllerRoute(
         name: "Admin",
         pattern: "{area=Admin}/{controller}/{action}/{id?}");

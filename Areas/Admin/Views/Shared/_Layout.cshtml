@@ -28,9 +28,20 @@
                     </ul>
                     <hr>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle py-1 px-2 gap-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class='bx bxs-user'></i>
-                            <strong>admin</strong>
+                            @{
+                                @using System.Security.Claims;
+                                var username = User.Claims.Where(x => x.Type == ClaimTypes.Name).FirstOrDefault().Value;
+                                if (@username != null)
+                                {
+                                    <strong> @username </strong>
+                                }
+                                else
+                                {
+                                    <strong> Username </strong>
+                                }
+                            }
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
@@ -39,7 +50,7 @@
                 </div>
             
         </div>
-            <div class="col-lg-10 bg-white vh-100 d-flex align-items-center justify-content-center">
+            <div class="col-lg-10 bg-white vh-100">
                 <main role="main" class="w-100">
                     @RenderBody()
                 </main>

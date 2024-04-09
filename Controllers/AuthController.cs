@@ -59,7 +59,7 @@ namespace StoreManagement.Controllers
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
-                new Claim(ClaimTypes.Name, appUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, appUser.Name.ToString()),
                 new Claim(ClaimTypes.Role, appUser.RoleId.ToString())
             };
 

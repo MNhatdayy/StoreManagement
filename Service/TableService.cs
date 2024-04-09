@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
@@ -19,7 +20,7 @@ namespace StoreManagement.Service
 
         public async Task<TableDTO> Create(TableDTO tableDTO)
         {
-            var table = _mapper.Map<Table>(tableDTO); 
+            var table = _mapper.Map<Models.Table>(tableDTO); 
             var createdTable = await tableRepository.Create(table);
             return _mapper.Map<TableDTO>(createdTable);
         }
@@ -32,7 +33,7 @@ namespace StoreManagement.Service
 
         public async Task<TableDTO> Edit(int id, TableDTO tableDTO, bool incluDeleted = false)
         {
-            var table = await tableRepository.Edit(id, _mapper.Map<Table>(tableDTO));
+            var table = await tableRepository.Edit(id, _mapper.Map<Models.Table>(tableDTO));
             if (table == null)
             {
                 return null;
@@ -50,6 +51,17 @@ namespace StoreManagement.Service
         {
             var table = await tableRepository.GetById(id, incluDeleted);
             return _mapper.Map<TableDTO>(table);
+        }
+
+        public async Task<List<TableDTO>> GetTablesByListId(List<int> ids)
+        {
+            var tables = new List<Models.Table>();
+            foreach (var id in ids)
+            {
+                var list = await tableRepository.GetAllByStoreId(id);
+                tables.AddRange(list);
+            }
+            return _mapper.Map<List<TableDTO>>(tables);
         }
     }
 }
