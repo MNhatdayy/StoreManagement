@@ -41,10 +41,10 @@ namespace StoreManagement.Service
             return _mapper.Map<List<OrderDTO>>(list);
         }
 
-        public async Task<List<OrderDetailDTO>> GetListOrderDetailsByIdOrder(int id)
+        public async Task<List<OrderDetailsDTO>> GetListOrderDetailsByIdOrder(int id)
         {
             var list = await _orderRepo.GetListOrderDetailsByIdOrder(id);
-            return _mapper.Map<List<OrderDetailDTO>>(list);
+            return _mapper.Map<List<OrderDetailsDTO>>(list);
         }
 
         public async Task<Order> GetOrderPaidAsync(int idStore, int idTable, bool incluDeleted = false)
