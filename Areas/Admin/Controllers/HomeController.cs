@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace StoreManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "1")]
     public class HomeController : Controller
     {
         private readonly IAppUserService _appUserService;
