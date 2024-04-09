@@ -6,11 +6,12 @@ namespace StoreManagement.Models
     {
         public int TableId { get; set; }
         public Table Table { get; set; }
-        public int SumFood { get; set; }
-        public double Incurred { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
-        public ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual Invoice Invoice { get; set; }
 
+        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<Invoice> Invoices { get; set; }
+        public bool status { get; set; }
+        public double TotalPrice { get; set; }
+        public bool StatusPay {  get; set; }
     }
 }

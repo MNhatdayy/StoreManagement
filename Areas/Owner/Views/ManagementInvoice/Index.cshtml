@@ -1,6 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<StoreManagement.DTO.OrderDTO>
+
 @{
+    ViewData["Title"] = "Order Management";
 }
-Management invoice
+
+<h1>My Invoice</h1>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Table ID</th>
+                    <th>Created Date</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.TableId</td>
+                        <td>@order.Created.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@order.TotalPrice</td>
+                        <td>@order.status</td>
+                        <td>
+                            <a href="@Url.Action("DetailUnpaid", "ManagementInvoice", new { id = order.Id })" class="btn btn-primary">
+                                View
+                            </a>
+                            <a href="@Url.Action("Create", "ManagementInvoice", new { id = order.Id })" class="btn btn-success">
+                                Create Invoice
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No orders found.</p>
+}
+

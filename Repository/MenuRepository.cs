@@ -62,6 +62,12 @@ namespace StoreManagement.Repository
             }
         }
 
+        public async Task<Menu> GetMenuByIdStore(int idStore, bool includeDeleted = false)
+        {
+                var menu = await _context.Menus.Where(obj => obj.StoreId == idStore && obj.IsDeleted == includeDeleted).FirstOrDefaultAsync();
+                return menu;
+        }
+
         public Task<Menu> GetById(int id, bool incluDeleted = false)
         {
             var menu = _context.Menus.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();

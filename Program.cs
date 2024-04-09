@@ -28,8 +28,10 @@ builder.Services.AddTransient<IAuthenticationRepository, AuthenticationRepositor
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
-
-
+builder.Services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddTransient<IMenuDetailRepository, MenuDetailRepository>();
 builder.Services.AddScoped<IMenuDetailService, MenuDetailService>();
 builder.Services.AddTransient<IFoodItemRepository, FoodItemRepository>();
@@ -43,8 +45,17 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+<<<<<<< .mine
 builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -69,6 +80,32 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 );
 
 
+=======
+builder.Services.AddHttpClient();
+/*builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> .theirs
 var app = builder.Build();
 //End
 //Seed method
@@ -92,7 +129,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();

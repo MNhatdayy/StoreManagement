@@ -47,6 +47,12 @@ namespace StoreManagement.Service
             return _mapper.Map<List<MenuDTO>>(list);
         }
 
+        public async Task<MenuDTO> GetMenuByIdStore(int idStore, bool incluDeleted = false)
+        {
+            var menu = await menuRepository.GetMenuByIdStore(idStore,incluDeleted);
+            return _mapper.Map<MenuDTO>(menu);
+        }
+
         public async Task<MenuDTO> GetById(int id, bool incluDeleted = false)
         {
             var menu = await menuRepository.GetById(id, incluDeleted);

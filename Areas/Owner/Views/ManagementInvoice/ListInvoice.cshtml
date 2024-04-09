@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<StoreManagement.DTO.InvoiceDTO>  
+
+<h1>List of Invoices</h1>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Order ID</th>
+                <th>Time</th>
+                <th>Charge</th>
+                <th>TotalPrice</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var invoice in Model)
+            {
+                <tr>
+                    <td>@invoice.Id</td>
+                    <td>@invoice.OrderId</td>
+                    <td>@invoice.PayTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@invoice.Charge</td>
+                    <td>@invoice.TotalPrice</td>
+                    <td>
+                        <a href="@Url.Action("InvoiceDetails", "ManagementInvoice", new { id = invoice.Id })" class="btn btn-primary">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

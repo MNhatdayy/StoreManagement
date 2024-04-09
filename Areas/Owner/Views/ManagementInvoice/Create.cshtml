@@ -1,0 +1,107 @@
+﻿@model StoreManagement.DTO.InvoiceDTO
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container">
+    <h1>Order Details</h1>
+
+    <div>
+        <h3>Order Information</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Order ID:</th>
+                    <td>@ViewBag.order.Id</td>
+                </tr>
+                <tr>
+                    <th>Table ID:</th>
+                    <td>@ViewBag.order.TableId</td>
+                </tr>
+                <tr>
+                    <th>Created Date:</th>
+                    <td>@ViewBag.order.Created.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+                <tr>
+                    <th>Total Price:</th>
+                    <td>@ViewBag.order.TotalPrice</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3>Order Items</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderDetail in ViewBag.OrderDetails)
+                {
+                    <tr>
+                        <td>@orderDetail.FoodItem.Name</td>
+                        <td>@orderDetail.Quantity</td>
+                        <td>@orderDetail.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <h3>Invoice Items</h3>
+        <table  class="table">
+            <thead>
+                <tr>
+                    <th>Charge</th>
+                    <th>Total Price</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" id="chargeInput" oninput="calculateTotalPrice()" /></td>
+                    <td><span id="totalPrice">0</span></td>
+                    <td><input type="text" id="noteInput" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form asp-action="CompleteInvoice" method="post" >
+        <div class="form-group" style="display:none">
+            <input type="number" id="orderId" name="OrderId" value="@ViewBag.order.Id" class="form-control" readonly/>
+        </div>
+        <div class="form-group">
+            <label asp-for="Charge">Charge</label>
+            <input type="number" asp-for="Charge" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Note">Note</label>
+            <input type="text" asp-for="Note"  class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+    <a href="/Owner/ManagementInvoice" class="btn btn-primary">Back to Invoice</a>
+</div>
+
+<script>
+    function calculateTotalPrice() {
+
+        var chargeInput = document.getElementById('chargeInput').value;
+
+        var chargeAmount = parseFloat(chargeInput) || 0;
+        chargeAmount = chargeAmount + @ViewBag.order.TotalPrice;
+        document.getElementById('totalPrice').textContent = chargeAmount.toFixed(2);
+
+    }
+
+    
+    
+</script>
+

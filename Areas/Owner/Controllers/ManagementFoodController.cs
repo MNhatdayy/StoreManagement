@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Service;
-using System.Net;
-using System.Net.Http;
-using System.Net.WebSockets;
+
 
 namespace StoreManagement.Areas.Owner.Controllers
 {

@@ -9,6 +9,7 @@ namespace StoreManagement.Interfaces.IRepositorys
         Task<Menu> GetById(int id, bool incluDeleted = false);
         Task<Menu> Edit(int id, Menu Menu, bool incluDeleted = false);
         Task Delete(int id, bool incluDeleted = false);
+        Task<Menu> GetMenuByIdStore(int idStore, bool includeDeleted = false);
 
     }
 }

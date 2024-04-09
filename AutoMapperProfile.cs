@@ -21,11 +21,7 @@ namespace StoreManagement
             CreateMap<FoodCategory, FoodCategoryDTO>().ReverseMap();
             CreateMap<FoodItem, FoodItemDTO>().ReverseMap();
             CreateMap<MenuDetail, MenuDetailDTO>().ReverseMap();
-
-            CreateMap<Order, OrderDTO>().ReverseMap();
-            CreateMap<Store, StoreDTO>().ReverseMap();
-            CreateMap<OrderDetail, OrderDetailsDTO>().ReverseMap();
-
+            CreateMap<Invoice, InvoiceDTO>().ReverseMap();
         }
     }
 }

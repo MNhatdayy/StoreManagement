@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model StoreManagement.Models.ShoppingCart
+<h2>Your Cart</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Food</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Note</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.NameFood</td>
+                <td>@item.Price</td>
+                <td>
+                    <input type="number" class="input-quantity-food" data-food-id="@item.IdFood" value="@item.Quantity" min="1" max="999" />
+                </td>
+                <td class="total-price-food" id="total-@item.IdFood">@(item.Price * item.Quantity)</td>
+                <td>
+                    <input type="text" class="input-notes" data-food-id="@item.IdFood" placeholder="Notes..." />
+                </td>
+                <td>
+                    <form asp-action="DeleteFromCart" asp-route-foodId="@item.IdFood" method="post">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="5">
+                @* <div class="form-group">
+                    <label asp-for="Notes">Notes</label>
+                    <textarea asp-for="Notes" class="form-control"></textarea>
+                </div> *@
+                <form asp-controller="Order" asp-action="SubmitOrder" method="post">
+                    <button type="submit">Submit</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div style="display: flex">
+    <a asp-action="OrderList" asp-controller="ShoppingCart">Your Orders</a>
+</div>
+
+@section Scripts{
+    <script src="~/js/Cart.js"></script>
+}
