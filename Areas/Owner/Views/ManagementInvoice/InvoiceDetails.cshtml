@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model StoreManagement.DTO.InvoiceDTO
+<head>
+<title>Invoice Details</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Invoice Details</h1>
+
+        <h2>Invoice Information</h2>
+        <table>
+            <tr>
+                <th>Invoice ID</th>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <th>Invoice Date</th>
+                <td>@Model.PayTime.ToString("dd/MM/yyyy")</td>
+            </tr>
+            <tr>
+                <th>Charge</th>
+                <td>@Model.Charge</td>
+            </tr>
+            <!-- Add more invoice details here as needed -->
+        </table>
+
+        <h2>Order Information</h2>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <td>@ViewBag.Order.Id</td>
+            </tr>
+            <tr>
+                <th>Table ID</th>
+                <td>@ViewBag.Order.TableId</td>
+            </tr>
+            <!-- Add more order details here as needed -->
+        </table>
+
+        <h2>Order Details</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderDetail in ViewBag.OrderDetail)
+                {
+                    <tr>
+                        <td>@orderDetail.FoodItem.Name</td>
+                        <td>@orderDetail.Quantity</td>
+                        <td>@orderDetail.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+            <a href="@Url.Action("ListInvoice", "ManagementInvoice")" class="btn btn-success">Cancel</a>
+        </div>
+    </div>
+    
+</body>

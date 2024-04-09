@@ -77,7 +77,9 @@ namespace StoreManagement.Data
                     context.Stores.AddRange(new List<Store>
                     {
                         new Store {StoreName = "Gogi", UserId = 2, AddressStore = "Bình Dương", IsDeleted = false},
+                        new Store {StoreName = "Hadilao", UserId = 2, AddressStore = "Thủ Đức", IsDeleted = false},
                     });
+                    context.SaveChanges();
                 }
                 /*if (!context.FoodCategories.Any())
                 {

@@ -25,8 +25,7 @@ namespace StoreManagement.Data
             modelBuilder.Entity<MenuDetail>()
                  .HasKey(m => new { m.FoodItemId, m.MenuId });
 
-            modelBuilder.Entity<OrderDetail>()
-                .HasKey(m=> new { m.OrderId, m.FoodId });
+                .HasKey(m=> new { m.OderId, m.FoodId}
 
             modelBuilder.Entity<FoodCategory>()
                 .HasOne(fc => fc.Store)
@@ -34,8 +33,11 @@ namespace StoreManagement.Data
                 .HasForeignKey(fc => fc.StoreId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            /*modelBuilder.Entity<Order>()
-                .HasOne<Invoice>();*/
+            modelBuilder.Entity<OrderDetails>()
+                .HasOne(o => o.FoodItem)
+                .WithMany()
+                .HasForeignKey(o => o.FoodId);
+            
         }
 
     }

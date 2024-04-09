@@ -12,8 +12,8 @@ using StoreManagement.Data;
 namespace StoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240401105514_DbInit")]
-    partial class DbInit
+    [Migration("20240408174808_UpdateDataBase")]
+    partial class UpdateDataBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -140,15 +140,17 @@ namespace StoreManagement.Migrations
                     b.Property<DateTime>("PayTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
-                    b.ToTable("Invoice");
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("StoreManagement.Models.Menu", b =>
@@ -207,17 +209,20 @@ namespace StoreManagement.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Incurred")
-                        .HasColumnType("float");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SumFood")
-                        .HasColumnType("int");
+                    b.Property<bool>("StatusPay")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TableId")
                         .HasColumnType("int");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -226,25 +231,26 @@ namespace StoreManagement.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("StoreManagement.Models.OrderDetail", b =>
+            modelBuilder.Entity("StoreManagement.Models.OrderDetails", b =>
                 {
-                    b.Property<int>("OderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("FoodId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FoodItemId")
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+                    b.HasKey("OrderId", "FoodId");
 
-                    b.HasKey("OderId", "FoodId");
-
-                    b.HasIndex("FoodItemId");
-
-                    b.HasIndex("OrderId");
+                    b.HasIndex("FoodId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -355,8 +361,8 @@ namespace StoreManagement.Migrations
             modelBuilder.Entity("StoreManagement.Models.Invoice", b =>
                 {
                     b.HasOne("StoreManagement.Models.Order", "Order")
-                        .WithOne("Invoice")
-                        .HasForeignKey("StoreManagement.Models.Invoice", "OrderId")
+                        .WithMany("Invoices")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -404,15 +410,19 @@ namespace StoreManagement.Migrations
                     b.Navigation("Table");
                 });
 
-            modelBuilder.Entity("StoreManagement.Models.OrderDetail", b =>
+            modelBuilder.Entity("StoreManagement.Models.OrderDetails", b =>
                 {
                     b.HasOne("StoreManagement.Models.FoodItem", "FoodItem")
                         .WithMany()
-                        .HasForeignKey("FoodItemId");
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("StoreManagement.Models.Order", "Order")
                         .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FoodItem");
 
@@ -458,7 +468,7 @@ namespace StoreManagement.Migrations
 
             modelBuilder.Entity("StoreManagement.Models.Order", b =>
                 {
-                    b.Navigation("Invoice");
+                    b.Navigation("Invoices");
 
                     b.Navigation("OrderDetails");
                 });

@@ -3,6 +3,50 @@
 *@
 @{
 }
-<h1>Order View Customer</h1>
-<p>Id Store: @ViewBag.idStore</p>
-<p>Id Table: @ViewBag.idTable</p>
+@model IEnumerable<StoreManagement.DTO.MenuDetailDTO>
+
+@{
+    ViewData["Title"] = "MenuDetail";
+}
+
+<h1>Menu</h1>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Picture</th>
+                <th>FoodCategory</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FoodItems.Name</td>
+                    <td>@item.FoodItems.Price</td>
+                    <td>@item.FoodItems.Description</td>
+                    <td width="15%"><img width="100%" src="@item.FoodItems.ImageUrl" /></td>
+                    <td>@(item.FoodItems.FoodCategory?.Name)</td>
+                    <td>
+                        <form method="post" action="@Url.Action("AddToCart", "Order")">
+                            <input type="hidden" name="foodId" value="@item.FoodItemId" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-primary">Add To Cart</button>
+                        </form>
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No menu details available.</p>
+}

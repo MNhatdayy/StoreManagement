@@ -5,10 +5,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StoreManagement.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class UpdateDataBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderDetails_Orders_OrderId",
+                table: "OrderDetails");
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Orders_Stores_StoreId",
                 table: "Orders");
@@ -21,8 +25,20 @@ namespace StoreManagement.Migrations
                 name: "PK_OrderDetails",
                 table: "OrderDetails");
 
+            migrationBuilder.DropIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails");
+
             migrationBuilder.DropColumn(
                 name: "IdPayment",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "IdStore",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "Incurred",
                 table: "Orders");
 
             migrationBuilder.DropColumn(
@@ -46,41 +62,61 @@ namespace StoreManagement.Migrations
                 table: "OrderDetails");
 
             migrationBuilder.DropColumn(
-                name: "OderredDish",
-                table: "OrderDetails");
-
-            migrationBuilder.DropColumn(
                 name: "TotalPrice",
                 table: "OrderDetails");
 
             migrationBuilder.RenameColumn(
-                name: "IdStore",
-                table: "Orders",
-                newName: "SumFood");
-
-            migrationBuilder.RenameColumn(
                 name: "SumFood",
                 table: "OrderDetails",
-                newName: "FoodId");
+                newName: "Quantity");
+
+            migrationBuilder.RenameColumn(
+                name: "OderredDish",
+                table: "OrderDetails",
+                newName: "Notes");
 
             migrationBuilder.RenameColumn(
                 name: "IdOder",
                 table: "OrderDetails",
-                newName: "OderId");
+                newName: "FoodId");
 
-            migrationBuilder.AlterColumn<double>(
-                name: "Incurred",
+            migrationBuilder.AddColumn<bool>(
+                name: "StatusPay",
+                table: "Orders",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<double>(
+                name: "TotalPrice",
                 table: "Orders",
                 type: "float",
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(18,2)");
+                defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<int>(
-                name: "FoodItemId",
+            migrationBuilder.AddColumn<bool>(
+                name: "status",
+                table: "Orders",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "OrderId",
                 table: "OrderDetails",
                 type: "int",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<double>(
+                name: "Price",
+                table: "OrderDetails",
+                type: "float",
+                nullable: false,
+                defaultValue: 0.0);
 
             migrationBuilder.AddColumn<int>(
                 name: "StoreId",
@@ -92,10 +128,10 @@ namespace StoreManagement.Migrations
             migrationBuilder.AddPrimaryKey(
                 name: "PK_OrderDetails",
                 table: "OrderDetails",
-                columns: new[] { "OderId", "FoodId" });
+                columns: new[] { "OrderId", "FoodId" });
 
             migrationBuilder.CreateTable(
-                name: "Invoice",
+                name: "Invoices",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -105,13 +141,14 @@ namespace StoreManagement.Migrations
                     PayTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Charge = table.Column<double>(type: "float", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invoice_Orders_OrderId",
+                        name: "FK_Invoices_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -129,9 +166,9 @@ namespace StoreManagement.Migrations
                 column: "TableId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_FoodItemId",
+                name: "IX_OrderDetails_FoodId",
                 table: "OrderDetails",
-                column: "FoodItemId");
+                column: "FoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FoodCategories_StoreId",
@@ -139,10 +176,9 @@ namespace StoreManagement.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoice_OrderId",
-                table: "Invoice",
-                column: "OrderId",
-                unique: true);
+                name: "IX_Invoices_OrderId",
+                table: "Invoices",
+                column: "OrderId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FoodCategories_Stores_StoreId",
@@ -153,11 +189,20 @@ namespace StoreManagement.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OrderDetails_FoodItems_FoodItemId",
+                name: "FK_OrderDetails_FoodItems_FoodId",
                 table: "OrderDetails",
-                column: "FoodItemId",
+                column: "FoodId",
                 principalTable: "FoodItems",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_OrderDetails_Orders_OrderId",
+                table: "OrderDetails",
+                column: "OrderId",
+                principalTable: "Orders",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Tables_TableId",
@@ -183,7 +228,11 @@ namespace StoreManagement.Migrations
                 table: "FoodCategories");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_OrderDetails_FoodItems_FoodItemId",
+                name: "FK_OrderDetails_FoodItems_FoodId",
+                table: "OrderDetails");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_OrderDetails_Orders_OrderId",
                 table: "OrderDetails");
 
             migrationBuilder.DropForeignKey(
@@ -195,7 +244,7 @@ namespace StoreManagement.Migrations
                 table: "Tables");
 
             migrationBuilder.DropTable(
-                name: "Invoice");
+                name: "Invoices");
 
             migrationBuilder.DropIndex(
                 name: "IX_Tables_StoreID",
@@ -210,7 +259,7 @@ namespace StoreManagement.Migrations
                 table: "OrderDetails");
 
             migrationBuilder.DropIndex(
-                name: "IX_OrderDetails_FoodItemId",
+                name: "IX_OrderDetails_FoodId",
                 table: "OrderDetails");
 
             migrationBuilder.DropIndex(
@@ -218,7 +267,19 @@ namespace StoreManagement.Migrations
                 table: "FoodCategories");
 
             migrationBuilder.DropColumn(
-                name: "FoodItemId",
+                name: "StatusPay",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "TotalPrice",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "status",
+                table: "Orders");
+
+            migrationBuilder.DropColumn(
+                name: "Price",
                 table: "OrderDetails");
 
             migrationBuilder.DropColumn(
@@ -226,27 +287,19 @@ namespace StoreManagement.Migrations
                 table: "FoodCategories");
 
             migrationBuilder.RenameColumn(
-                name: "SumFood",
-                table: "Orders",
-                newName: "IdStore");
-
-            migrationBuilder.RenameColumn(
-                name: "FoodId",
+                name: "Quantity",
                 table: "OrderDetails",
                 newName: "SumFood");
 
             migrationBuilder.RenameColumn(
-                name: "OderId",
+                name: "Notes",
+                table: "OrderDetails",
+                newName: "OderredDish");
+
+            migrationBuilder.RenameColumn(
+                name: "FoodId",
                 table: "OrderDetails",
                 newName: "IdOder");
-
-            migrationBuilder.AlterColumn<decimal>(
-                name: "Incurred",
-                table: "Orders",
-                type: "decimal(18,2)",
-                nullable: false,
-                oldClrType: typeof(double),
-                oldType: "float");
 
             migrationBuilder.AddColumn<int>(
                 name: "IdPayment",
@@ -254,6 +307,20 @@ namespace StoreManagement.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "IdStore",
+                table: "Orders",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "Incurred",
+                table: "Orders",
+                type: "decimal(18,2)",
+                nullable: false,
+                defaultValue: 0m);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "PayTime",
@@ -267,6 +334,14 @@ namespace StoreManagement.Migrations
                 table: "Orders",
                 type: "int",
                 nullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "OrderId",
+                table: "OrderDetails",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
 
             migrationBuilder.AddColumn<int>(
                 name: "Id",
@@ -290,12 +365,6 @@ namespace StoreManagement.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<string>(
-                name: "OderredDish",
-                table: "OrderDetails",
-                type: "nvarchar(max)",
-                nullable: true);
-
             migrationBuilder.AddColumn<decimal>(
                 name: "TotalPrice",
                 table: "OrderDetails",
@@ -312,6 +381,18 @@ namespace StoreManagement.Migrations
                 name: "IX_Orders_StoreId",
                 table: "Orders",
                 column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_OrderDetails_Orders_OrderId",
+                table: "OrderDetails",
+                column: "OrderId",
+                principalTable: "Orders",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Stores_StoreId",

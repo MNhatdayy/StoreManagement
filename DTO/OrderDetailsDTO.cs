@@ -5,10 +5,12 @@ namespace StoreManagement.DTO
     public class OrderDetailsDTO
     {
         public int Id {  get; set; } 
-        public int IdFood { get; set; }
-        public decimal TotalPrice { get; set; }
-        public int SumFood { get; set; }
-        public string OderredDish { get; set; }
+        public int FoodId { get; set; }
+        public FoodItemDTO FoodItem { get; set; }
+        public int OrderId { get; set; }
         public OrderDTO Order { get; set; }
+        public int Quantity { get; set; } = 1;
+        public string Notes { get; set; }
+        public double Price { get; set; }
     }
 }

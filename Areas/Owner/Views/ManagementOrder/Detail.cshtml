@@ -1,0 +1,63 @@
+﻿@model StoreManagement.DTO.OrderDTO
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container">
+    <h1>Order Details</h1>
+
+    <div>
+        <h3>Order Information</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Order ID:</th>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr>
+                    <th>Table ID:</th>
+                    <td>@Model.TableId</td>
+                </tr>
+                <tr>
+                    <th>Created Date:</th>
+                    <td>@Model.Created.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+                <tr>
+                    <th>Total Price:</th>
+                    <td>@Model.TotalPrice</td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td>@Model.status</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3>Order Items</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderDetail in ViewBag.OrderDetails)
+                {
+                    <tr>
+                        <td>@orderDetail.FoodItem.Name</td>
+                        <td>@orderDetail.Quantity</td>
+                        <td>@orderDetail.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/Owner/ManagementOrder" class="btn btn-primary">Back to Orders</a>
+    <a href="@Url.Action("Accept", "ManagementOrder", new { id =  ViewBag.Id })" class="btn btn-primary">Accept</a>
+</div>

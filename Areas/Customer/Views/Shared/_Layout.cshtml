@@ -16,62 +16,34 @@
         <div class="row h-100">
             <div class="col-lg-2 px-0">
                 <div class="d-flex flex-column flex-shrink-0 px-3 text-white bg-gradient-custom" style="height: 100%;">
-                    <a href="/owner/home" class="d-flex align-items-center gap-4 text-white text-decoration-none text-center w-100 mt-2">
+                    <a href="#" class="d-flex align-items-center gap-4 text-white text-decoration-none text-center w-100">
                         <i class='bx bx-menu fs-3'></i>
-                        <span class="fs-4">Quản lý</span>
+                        <span class="fs-4">ORDER</span>
                     </a>
 
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="/owner/ManagementStore" class="nav-link text-white d-flex align-items-center gap-2" aria-current="page">
-                                <i class='bx bxs-store-alt'></i>Quản lý quán
+                            <a href="@Url.Action("ViewCart","Order")" class="nav-link text-white d-flex align-items-center gap-2" aria-current="page">
+                                <i class='bx bx-user'></i>
+                                Xem giỏ hàng
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/owner/ManagementTable" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bx-layer'></i>Quản lý bàn
+                            <a href="#" class="nav-link text-white d-flex align-items-center gap-2" aria-current="page">
+                                <i class='bx bx-user'></i>
+                                Yêu cầu nhân viên hỗ trợ
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/owner/ManagementMenu" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bxs-food-menu'></i>
-                                Quản lý menu
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/owner/ManagementFood" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bxs-dish'></i>
-                                Quản lý đồ ăn
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/owner/ManagementFoodCategory" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bxs-category'></i>
-                                Quản lý loại đồ ăn
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/owner/ManagementOrder" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bx-cart-download'></i>
-                                Đơn đặt hàng
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/owner/ManagementInvoice" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bx-align-left'></i>
-                                Đơn hàng đã nhận 
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/owner/ManagementInvoice/ListInvoice" class="nav-link text-white d-flex align-items-center gap-2">
-                                <i class='bx bx-align-left'></i>
-                                Tất cả hóa đơn
+                            <a href="#" class="nav-link text-white d-flex align-items-center gap-2" aria-current="page">
+                                <i class='bx bx-user'></i>
+                                Thanh toán
                             </a>
                         </li>
                     </ul>
                     <hr>
-                    <div class="dropdown">
+                    @* <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                             <strong>admin</strong>
@@ -83,7 +55,7 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Sign out</a></li>
                         </ul>
-                    </div>
+                    </div> *@
                 </div>
             </div>
             <div class="col-lg-10">
