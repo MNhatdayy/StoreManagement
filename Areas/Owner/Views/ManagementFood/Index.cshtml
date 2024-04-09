@@ -9,47 +9,92 @@
 Một cái grid view hiển thị các đồ ăn, có CRUD 
 -> CRUD sẽ vào các route để Add/Create/Edit/Delete *@
 
+<div class="container d-flex align-items-center h-100">
+    <div class="management--wrapper">
+        <div class="actions">
+            <div class="action-search">
+                <form asp-action="Search" method="post">
+                    <div class="form-group w-100">
+                        <div class="d-flex align-items-center gap-2">
+                            <label>Tìm kiếm </label>
+                            <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%"/>
+                        </div>
+                    </div>
 
-@model IEnumerable<StoreManagement.DTO.FoodItemDTO>
-
-<div class="container">
-    <a asp-action="Create">
-        <button type="submit" class="btn btn-primary">Add</button>
-    </a>|
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Picture</th>
-                <th>FoodCategory</th>
-                <th>Actions</th>
-                <!-- Add other columns as needed -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var foodItem in Model)
-            {
-                <tr>
-                    <td>@foodItem.Id</td>
-                    <td>@foodItem.Name</td>
-                    <td>@foodItem.Price</td>
-                    <td>@foodItem.Description</td>
-                    <td width="15%"><img width="100%" src="@foodItem.ImageUrl" /></td>
-                    <td width="15%">@foodItem.FoodCategory.Name</td>
-                    <td>
-                        <a asp-action="Update" asp-route-id="@foodItem.Id">
-                            <button type="submit" class="btn btn-info">Edit</button>
-                        </a> |
-                        <a asp-action="Delete" asp-route-id="@foodItem.Id">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
+                </form>
+            </div>
+            <div class="action-add">
+                <a href="/owner/managementfood/create" class="btn btn-red-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm món ăn</span></a>
+            </div>
+        </div>
+    
+        <div class="content">
+        <div class="container mt-5 px-2"> 
+            <div class="table-responsive border-3">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr class="bg-light">
+                                <th scope="col" width="20%">Tên món</th>
+                                <th scope="col" width="10%">Giá</th>
+                                <th scope="col" width="15%">Mô tả</th>
+                                <th scope="col" width="20%">-</th>
+                                <th scope="col" width="20%">Loại</th>
+                                <th scope="col" width="15%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var foodItem in Model)
+                            {
+                                <tr class="table-item">
+                                    <td>@foodItem.Name</td>
+                                    <td>@foodItem.Price</td>
+                                    <td>@foodItem.Description</td>
+                                    <td width="15%"><img width="100%" src="@foodItem.ImageUrl" /></td>
+                                    <td width="15%">@foodItem.FoodCategory.Name</td>
+                                    <td>
+                                        <a href="/owner/managementfood/update/@foodItem.Id" class="btn btn-primary-custom">Chỉnh sửa</a>
+                                        <buton type="buton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-@foodItem.Id">Xóa</buton>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="modal-@foodItem.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        Bạn có chắc chắn muốn xóa món ăn @foodItem.Name không ?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                        <form action="/owner/managementcateogy/deleteconfirmed" method="post">
+                                            <input value="@foodItem.Id" name="id" class="d-none">
+                                            <button type="submit" class="btn btn-primary-custom">Đồng ý</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('#txtSearch').keyup(function () {
+            var typeValue = $(this).val();
+            $('tbody tr').each(function () {
+                if ($(this).text().search(new RegExp(typeValue, "i")) < 0) {
+                    $(this).fadeOut();
+                } else {
+                    $(this).show();
+                }
+            })
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using StoreManagement.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using StoreManagement.Models;
 
 namespace StoreManagement.Data
 {
@@ -20,12 +21,10 @@ namespace StoreManagement.Data
                         },
                         new Role()
                         {
-
                             Name = "Owner",
                         },
                         new Role()
                         {
-
                             Name = "Customer",
                         },
                     });
@@ -46,7 +45,7 @@ namespace StoreManagement.Data
                             Password = "Nhat2003@",
                             PhoneNumber = "1234567890",
                             IsDeleted = false,
-                            RoleId = b,
+                            RoleId = a,
 
                         },
                         new AppUser()
@@ -67,7 +66,7 @@ namespace StoreManagement.Data
                             Password = "Tuandb@",
                             PhoneNumber = "1234567890",
                             IsDeleted = false,
-                            RoleId = c,
+                            RoleId = a,
                         }
                     });
                     context.SaveChanges();

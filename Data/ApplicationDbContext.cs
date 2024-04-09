@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StoreManagement.Models;
 
 namespace StoreManagement.Data
@@ -10,7 +11,7 @@ namespace StoreManagement.Data
 
         }
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public  DbSet<Role> Roles { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using StoreManagement.DTO.AuthDTO;
-using StoreManagement.Interfaces.IServices;
+using System.Security.Claims;
+using IAuthenticationService = StoreManagement.Interfaces.IServices.IAuthenticationService;
+using StoreManagement.DTO;
 
 namespace StoreManagement.Controllers
 {
@@ -16,16 +20,54 @@ namespace StoreManagement.Controllers
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             var result = await _authService.Login(loginDTO);
-            if (result == -1)
-            {
-                return RedirectToAction("Login", "Login");
+
+
+            switch(result.RoleId) {
+                case 1:
+                    {
+                        await CreateCookieAsync(result);
+                        return Redirect("/admin/home");
+                    }
+                case 2:
+                    {
+                        await CreateCookieAsync(result);
+                        return Redirect("/owner/home");
+                    }
+                default:
+                    {
+
+                        return Redirect("/auth/login");
+                    }
             }
-            return RedirectToAction("Index", "Home");
+
         }
         [HttpGet]
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/auth/login");
+        }
+
+        private async Task CreateCookieAsync(AppUserDTO appUser)
+        {
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, appUser.Name.ToString()),
+                new Claim(ClaimTypes.Role, appUser.RoleId.ToString())
+            };
+
+            ClaimsIdentity identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
         }
     }
 

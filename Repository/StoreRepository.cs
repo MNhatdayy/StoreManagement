@@ -2,6 +2,7 @@
 using StoreManagement.Data;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Models;
+using System.Xml.Linq;
 
 namespace StoreManagement.Repository
 {
@@ -47,6 +48,12 @@ namespace StoreManagement.Repository
         public async Task<IList<Store>> GetByNameAsync(string name, bool incluDeleted = false)
         {
             var list = await _context.Stores.Where(p=>p.StoreName.Contains(name)).ToListAsync();
+            return list;
+        }
+
+        public async Task<List<Store>> GetStoreByUserId(int userId)
+        {
+            var list = await _context.Stores.Where(p => p.UserId == userId).ToListAsync();
             return list;
         }
 

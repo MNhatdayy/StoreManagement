@@ -43,15 +43,6 @@ namespace StoreManagement.Service
             }
             return _mapper.Map<FoodCategoryDTO>(foodcategory);
         }
-        public async Task<FoodCategoryDTO> GetByFoodItemId(int foodItemId)
-        {
-            var foodCategory = await foodCategoryRepository.GetByFoodItemId(foodItemId);
-            if (foodCategory == null)
-            {
-                return null; 
-            }
-            return _mapper.Map<FoodCategoryDTO>(foodCategory);
-        }
 
         public async Task<List<FoodCategoryDTO>> GetAll()
         {

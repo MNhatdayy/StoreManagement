@@ -10,5 +10,7 @@ namespace StoreManagement.Interfaces.IRepositorys
         Task Delete( int id, bool incluDeleted = false);
         Task<IList<Store>> GetByNameAsync(string name, bool incluDeleted = false);
         Task<Store> UpdateAsync(Store store, bool incluDeleted = false);
+
+        Task<List<Store>> GetStoreByUserId(int userId);
     }
 }

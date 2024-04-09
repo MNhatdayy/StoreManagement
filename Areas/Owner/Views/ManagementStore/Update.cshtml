@@ -10,19 +10,42 @@
     ViewData["Title"] = "Edit Store";
 }
 
-<h2>Edit Stores</h2>
+<div class="edit--wrapper container border shadow rounded-3 p-4">
+    <p class="fs-3 fw-bold">Chỉnh sửa thông tin cửa hàng</p>
 
-<form asp-action="Update" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="StoreName"></label>
-        <input asp-for="StoreName" class="form-control" />
-        <span asp-validation-for="StoreName" class="text-danger"></span>
+    <div class="form-edit">
+        <form action="/owner/managementstore/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <div class="row">
+                <div class="form-group col-4">
+                    <label asp-for="StoreName"></label>
+                    <input asp-for="StoreName" class="form-control" />
+                    <span asp-validation-for="StoreName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <label asp-for="AddressStore"></label>
+                    <input asp-for="AddressStore" class="form-control" />
+                    <span asp-validation-for="AddressStore" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary-custom mt-3">Lưu</button>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="AddressStore"></label>
-        <input asp-for="AddressStore" class="form-control" />
-        <span asp-validation-for="AddressStore" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
+</div>
+
+
+@{
+    if (ViewBag.Error != null)
+    {
+        <div class="show-toast position-fixed bottom-0 end-0 p-3">
+            <vc:toast-component></vc:toast-component>
+        </div>
+    }
+}
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

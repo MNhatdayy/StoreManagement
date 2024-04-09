@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Models;
-using StoreManagement.Service;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
@@ -51,24 +49,27 @@ namespace StoreManagement.Areas.Owner.Controllers
         {
             try
             {
-                var foodCategory = await _foodCategoryService.GetAll();
-                var storeId = foodCategory.FirstOrDefault()?.StoreId;
+                var menu = await _menuService.GetById(menuId);
+                if (menu == null)
+                {
+                    return BadRequest("Invalid menu ID");
+                }
 
+                var storeId = menu.StoreId;
                 ViewBag.StoreId = storeId;
 
+                var foodCategory = await _foodCategoryService.GetAll();
                 var foodItems = await _foodItemService.GetAll();
                 var filteredFoodItems = foodItems.Where(item => foodCategory.Any(fc => fc.Id == item.FoodCategoryId && fc.StoreId == storeId));
-                
                 ViewBag.FoodItems = filteredFoodItems.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Name }).ToList();
-                
+
                 var menuDetails = await _menuDetailService.GetMenuDetailsByMenuId(menuId);
-                
                 ViewBag.MenuDetails = menuDetails;
                 return View();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return BadRequest(new { errorMessage = "Có lỗi xảy ra: " + ex.Message });
             }
         }
 
@@ -86,18 +87,20 @@ namespace StoreManagement.Areas.Owner.Controllers
                 {
                     return BadRequest("Invalid menu ID");
                 }
+
                 var fooditem = await _foodItemService.GetById(foodItemId);
                 if (fooditem == null)
                 {
                     return BadRequest("Invalid food ID");
                 }
+
                 var foodCategory = await _foodCategoryService.GetById(fooditem.FoodCategoryId);
                 if (foodCategory == null || foodCategory.StoreId != menu.StoreId)
                 {
                     return BadRequest("Selected food item does not belong to the store");
                 }
-                var result = await _menuDetailService.AddMenuItem(menuId, foodItemId);
 
+                var result = await _menuDetailService.AddMenuItem(menuId, foodItemId);
                 if (!result)
                 {
                     return BadRequest("Failed to add menu item");
@@ -107,7 +110,7 @@ namespace StoreManagement.Areas.Owner.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                return BadRequest(new { errorMessage = "Có lỗi xảy ra: " + ex.Message });
             }
         }
 
@@ -127,6 +130,24 @@ namespace StoreManagement.Areas.Owner.Controllers
         {
             await _menuDetailService.Delete(menuId, foodItemId);
             return RedirectToAction("GetMenuItem", new { menuId = menuId });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateMenuStatus( [FromBody]List<MenuDetailDTO> updatedStatusList)
+        {
+            try
+            {
+                foreach (var item in updatedStatusList)
+                {
+                    _menuDetailService.UpdateMenuStatus(item.MenuId, item.FoodItemId, item.Status);
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
     }
 }

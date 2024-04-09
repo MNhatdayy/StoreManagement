@@ -4,41 +4,133 @@
 @{
 }
 @model IEnumerable<StoreManagement.DTO.AppUserDTO>
-<h1>Management User</h1>
+<div class="management-user px-2 py-4">
+    <div class="actions">
+        <div class="action-search">
+            <form asp-action="Search" method="post">
+                <div class="form-group w-100">
 
-<form asp-action="Add" method="get">
-    <input type="submit" value="Add" class="btn btn-primary" />
-</form>
-<form asp-action="Search" method="post">
-    <div class="form-group">
-        <label for="searchTerm">Search Term:</label>
-        <input type="text" id="searchTerm" name="searchTerm" class="form-control" />
-        <input type="submit" value="Search" class="btn btn-primary" />
+                    <div class="d-flex align-items-center gap-2">
+                        <label>Tìm kiếm </label>
+                        <input type="text" id="searchTerm" name="searchTerm" class="form-control w-75" />
+                        <button type="submit" class="btn btn-primary-custom d-flex gap-2 align-items-center"><i class='bx bx-search-alt-2'></i> <span class="w-100">Tìm</span></button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="action-add">
+            <a href="/admin/managementappuser/add" class="btn btn-red-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm người dùng</span></a>
+        </div>
     </div>
+    <div class="content">
+        <div class="container mt-5 px-2">
+            <div class="table-responsive border-3">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr class="bg-light">
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="15%">Tên người dùng</th>
+                            <th scope="col" width="10%">Status</th>
+                            <th scope="col" width="10%">Số điện thoại</th>
+                            <th scope="col" width="20%">Email</th>
+                            <th scope="col" width="20%">Địa chỉ</th>
+                            <th scope="col" width="15%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr class="table-item">
+                                <td>@user.Id</td>
+                                <td>@user.Name</td>
+                                @{
+                                    if (!user.IsDeleted)
+                                    {
+                                        <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">Active</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">Not Active</span></td>
+                                    }
+                                }
 
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name User</th>
-            <th>Phonenumber</th>
-            <th>Email User</th>
-            <th>Address User</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.Name</td>
-                <td>@user.PhoneNumber</td>
-                <td>@user.Email</td>
-                <td>@user.Address</td>
-                <td>
-                    <a asp-action="Update" asp-route-id="@user.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.Email</td>
+                                <td>@user.Address</td>
+                                <td>
+                                    <a href="/admin/managementappuser/update/@user.Id" class="btn btn-primary-custom">Chỉnh sửa</a>
+                                    <buton type="buton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-@user.Id">Xóa</buton>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="modal-@user.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Bạn có chắc chắn muốn xóa người dùng @user.Name không ?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <form action="/admin/managementappuser/deleteconfirmed" method="post">
+                                        <input value="@user.Id" name="id" class="d-none">
+                                        <button type="submit" class="btn btn-primary-custom">Đồng ý</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        }
+                    </tbody>
+                </table
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<style>
+    .management-user {
+        height: 100vh;
+    }
+    .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .action-search {
+        width: 800px;
+    }
+
+    .actions button {
+        min-width: 80px;
+        max-width: 250px;
+    }
+
+    .action-add {
+
+    }
+
+    table {
+        table-layout:fixed;
+    }
+
+    table td {
+        white-space: nowrap;
+        overflow: hidden;
+        width: 180px;
+        text-overflow: ellipsis;
+        padding: 4px 8px;
+        height: 55px;
+        line-height: 55px;
+    }
+
+    .table-item:hover {
+        background-color: #ECECEC;
+    }
+</style>

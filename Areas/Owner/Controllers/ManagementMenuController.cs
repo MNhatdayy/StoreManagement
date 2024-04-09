@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
@@ -7,6 +8,8 @@ using StoreManagement.Service;
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "2")]
+
     public class ManagementMenuController : Controller
     {
         private readonly IMenuService _menuService;

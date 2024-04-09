@@ -3,6 +3,8 @@ using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
+using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace StoreManagement.Service
 {
@@ -10,9 +12,12 @@ namespace StoreManagement.Service
     {
         private readonly IStoreRepository _storeRepo;
         private readonly IMapper _mapper;
+        private int userId;
+
 
         public StoreService(IStoreRepository storeRepo, IMapper mapper)
         {
+
             _storeRepo = storeRepo;
             _mapper = mapper;
         }
@@ -47,6 +52,13 @@ namespace StoreManagement.Service
             var list = await _storeRepo.GetByNameAsync(name, incluDeleted);
             return _mapper.Map<List<StoreDTO>>(list);
         }
+
+        public async Task<List<StoreDTO>> GetStoresByUserId(int userId)
+        {
+            var list = await _storeRepo.GetStoreByUserId(userId);
+            return _mapper.Map<List<StoreDTO>>(list);
+        }
+
         public async Task<StoreDTO> UpdateAsync(StoreDTO storeDto, bool incluDeleted = false)
         {
             var store = _mapper.Map<Store>(storeDto);

@@ -10,5 +10,7 @@ namespace StoreManagement.Interfaces.IServices
         Task<bool> Delete(int id, bool incluDeleted = false);
         Task<StoreDTO> UpdateAsync(StoreDTO storeDto, bool incluDeleted = false);
         Task<IList<StoreDTO>> GetByNameAsync(string name, bool incluDeleted = false);
+
+        Task<List<StoreDTO>> GetStoresByUserId(int userId);
     }
 }
