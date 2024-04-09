@@ -38,3 +38,5 @@
 bin/
 obj/
 vs/
+/Areas/Owner/Views/ManagementTable/Index.cshtml
+/Areas/Owner/Controllers/ManagementFoodController.cs
