@@ -6,83 +6,75 @@
 }
 @model IEnumerable<StoreManagement.DTO.StoreDTO>
 
-<div class="management-store--wrapper">
-    <header>
-        <h1 class="text-center">Quản lý cửa hàng</h1>
-    </header>
-    <div class="store-action">
-        <div class="action-search">
-            <form asp-action="Search" method="post">
-                <div class="form-group w-100">
-                    <div class="d-flex align-items-center gap-2">
-                        <div>
-                            <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%" />
+<div class="container d-flex align-items-center h-100">
+    <div class="management--wrapper">
+        <div class="actions">
+            <div class="action-search">
+                <form asp-action="Search" method="post">
+                    <div class="form-group w-100">
+                        <div class="d-flex align-items-center gap-2">
+                            <label>Tìm kiếm </label>
+                            <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%"/>
                         </div>
                     </div>
-                </div>
-                
-            </form>
+
+                </form>
+            </div>
+            <div class="action-add">
+                <a href="/owner/managementstore/create" class="btn btn-red-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm quán mới</span></a>
+            </div>
         </div>
-        <div class="action-add">
-            <a asp-action="Add" class="btn btn-primay-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm cửa hàng</span></a>
+    
+        <div class="content">
+        <div class="container mt-5 px-2"> 
+            <div class="table-responsive border-3">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr class="bg-light">
+                                <th scope="col" width="20%">Tên quán</th>
+                                <th scope="col" width="15%">Địa chỉ</th>
+                                <th scope="col" width="20%">-</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var store in Model)
+                            {
+                                <tr class="table-item">
+                                    <td>@store.StoreName</td>
+                                    <td>@store.AddressStore</td>
+                                    <td>
+                                        <a href="/owner/managementstore/update/@store.Id" class="btn btn-primary-custom">Chỉnh sửa</a>
+                                        <buton type="buton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-@store.Id">Xóa</buton>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="modal-@store.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        Bạn có chắc chắn muốn xóa quán @store.StoreName không ?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                        <form action="/owner/managementstore/deleteconfirmed" method="post">
+                                            <input value="@store.Id" name="id" class="d-none">
+                                            <button type="submit" class="btn btn-primary-custom">Đồng ý</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table
+            </div>
         </div>
     </div>
-
+    </div>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name Store</th>
-            <th>Name Owner</th>
-            <th>Phone Number</th>
-            <th>Address</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var store in Model)
-        {
-            <tr>
-                <td>@store.StoreName</td>
-                <td>
-                    @{
-                        var appUser = appUsers.FirstOrDefault(c => c.Id == store.UserId);
-                        var nameUser = appUser != null ? appUser.Name : "No User Owner";
-                    }
-                    @nameUser
-                </td>
-                <td>
-                    @{
-                        
-                        var phoneUser = appUser != null ? appUser.PhoneNumber : "No Phone User";
-                    }
-                    @phoneUser
-                </td>
-                <td>@store.AddressStore</td>
-                <td>
-                    <a asp-action="Update" asp-route-id="@store.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@store.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<style>
-    .store-action {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-    }
-    .action-search {
-        width: 800px;
-    }
-
-    .store-action button {
-        min-width: 100px;
-    }
-</style>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $('#txtSearch').keyup(function () {

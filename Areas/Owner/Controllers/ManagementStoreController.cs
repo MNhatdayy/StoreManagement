@@ -4,6 +4,7 @@ using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
+using System.Security.Claims;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
@@ -12,16 +13,19 @@ namespace StoreManagement.Areas.Owner.Controllers
     {
         private readonly IStoreService _storeService;
         private readonly IAppUserService _appUserService;
-
+        private int userId;
         public ManagementStoreController(IStoreService storeService, IAppUserService appUserService)
         {
+
             _storeService = storeService;
             _appUserService = appUserService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var store = await _storeService.GetAllAsync();
+            userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+
+            var store = await _storeService.GetStoresByUserId(userId);
             var appUsers = await _appUserService.GetAllAsync();
             ViewData["AppUsers"] = appUsers;
             return View(store);
@@ -36,10 +40,13 @@ namespace StoreManagement.Areas.Owner.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(StoreDTO storeDTO)
         {
-            if(ModelState.IsValid)
+            // Get claims Cookie
+            userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            storeDTO.UserId = userId;
+            if (ModelState.IsValid)
             {
                 await _storeService.CreateAsync(storeDTO);
-                return RedirectToAction("Index");
+                return Redirect("index");
             }
             var appUsers = await _appUserService.GetAllAsync();
             ViewBag.AppUsers = new SelectList(appUsers, "Id", "Name");
@@ -65,7 +72,7 @@ namespace StoreManagement.Areas.Owner.Controllers
             if(ModelState.IsValid)
             {
                 await _storeService.UpdateAsync(storeDTO);
-                return RedirectToAction("Index");
+                return Redirect("index");
             }
             return View(storeDTO);
         }
@@ -82,7 +89,7 @@ namespace StoreManagement.Areas.Owner.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _storeService.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return Redirect("index");
         }
         [HttpPost, ActionName("Search")]
         public async Task<IActionResult> Search(string searchTerm)

@@ -1,4 +1,6 @@
-﻿namespace StoreManagement.DTO
+﻿using StoreManagement.Models;
+
+namespace StoreManagement.DTO
 {
     public class FoodItemDTO
     {

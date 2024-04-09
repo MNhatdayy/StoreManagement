@@ -19,7 +19,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.27" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.27">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
       <PrivateAssets>all</PrivateAssets>
@@ -135,10 +141,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementFoodCategory\Create.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementFoodCategory\Delete.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementFoodCategory\Index.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementFoodCategory\Update.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Owner\Views\Category\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Owner\Views\Category\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Owner\Views\Category\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\Owner\Views\Category\Update.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementMenu\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementMenu\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Owner\Views\ManagementMenu\Index.cshtml" />
@@ -158,19 +164,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Owner\Views\ManagementFoodCategory\Create.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Owner\Views\Category\Create.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Owner\Views\ManagementFoodCategory\Delete.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Owner\Views\Category\Delete.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Owner\Views\ManagementFoodCategory\Index.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Owner\Views\Category\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Owner\Views\ManagementFoodCategory\Update.cshtml" />
+    <UpToDateCheckInput Remove="Areas\Owner\Views\Category\Update.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -5,27 +5,20 @@
     ViewData["Title"] = "Add Table";
 }
 @model StoreManagement.DTO.TableDTO
+@using Microsoft.AspNetCore.Mvc.Rendering
 
-<h2>Add New Table</h2>
-
-<form asp-action="Create" method="post">
-    <a asp-controller="ManagementTable" asp-action="Index">
-        <button type="button" class="btn btn-info">Return Menu</button>
-    </a>
+@ViewBag.List
+<form href="/owner/managementtable/create" method="post">
     <div class="form-group">
-        <label asp-for="Status"></label>
-        <select asp-for="Status" class="form-control">
-            <option value="true">True</option>
-            <option value="false">False</option>
+        <label asp-for="StoreID">Tên quán: </label>
+        <select asp-for="StoreID" asp-items="ViewBag.List" class="form-control">
+            <option value="">Chọn quán</option>
         </select>
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="StoreID"></label>
-        <input asp-for="StoreID" type="number" class="form-control" />
         <span asp-validation-for="StoreID" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Tạo</button>
+    <a class="btn btn-red-custom" href="/owner/managementtable/index">Trở về</a>
+
 </form>
 @section Scripts{
     @{

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using StoreManagement.DTO;
 using StoreManagement.DTO.AuthDTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
@@ -10,10 +12,12 @@ namespace StoreManagement.Service
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IAuthenticationRepository _authRepo;
+        private readonly IMapper mapper;
 
-        public AuthenticationService(IAuthenticationRepository authenticationRepository)
+        public AuthenticationService(IAuthenticationRepository authenticationRepository, IMapper mapper)
         {
             _authRepo = authenticationRepository;
+            this.mapper = mapper;
         }
 
         public async Task<bool> ChangePassword(ChangePasswordDTO changePasswordDTO)
@@ -34,21 +38,21 @@ namespace StoreManagement.Service
             return false;
         }
 
-        public async Task<int> Login(LoginDTO loginDTO)
+        public async Task<AppUserDTO> Login(LoginDTO loginDTO)
         {
             if (loginDTO == null || string.IsNullOrEmpty(loginDTO.Email) || string.IsNullOrEmpty(loginDTO.Password))
             {
-                return -1;
+                return null;
             }
             var user = await _authRepo.FindByEmailAsync(loginDTO.Email);
             if (user != null && user.Id > 0 && !user.IsDeleted)
             {
                 if (await _authRepo.CheckPasswordAsync(user, loginDTO.Password))
                 {
-                    return user.RoleId;
+                    return mapper.Map<AppUserDTO>(user);
                 }
             }
-            return -1;
+            return null;
         }
 
         public async Task<bool> Register(RegisterDTO registerDTO)
@@ -62,16 +66,22 @@ namespace StoreManagement.Service
             {
                 return false;
             }
-            var newUser = new AppUser { Name = registerDTO.FullName, Email = registerDTO.Email };
-            var result = await  _authRepo.CreateAsync(newUser, registerDTO.Password);
-            if (result)
+
+            var user = await _authRepo.FindByEmailAsync(registerDTO.Email);
+            if (user == null)
             {
-                if (newUser.Id > 0)
+                var newUser = new AppUser { Name = registerDTO.FullName, Email = registerDTO.Email };
+                var result = await _authRepo.CreateAsync(newUser, registerDTO.Password);
+                if (result)
                 {
-                    await _authRepo.AddToRoleAsync(newUser, 1);
-                    return true;
+                    if (newUser.Id > 0)
+                    {
+                        await _authRepo.AddToRoleAsync(newUser, 1);
+                        return true;
+                    }
                 }
             }
+
             return false;
         }
     }

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\HUTECH\HUTECH Tai lieu\DAWebMVC\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2024-04-08T03:55:35.4656937Z;True|2024-04-08T10:34:33.3221393+07:00;True|2024-04-08T10:29:55.2312820+07:00;True|2024-04-08T10:20:28.7128592+07:00;True|2024-04-08T09:54:35.8841221+07:00;True|2024-04-08T09:48:19.8008780+07:00;True|2024-04-08T09:42:35.3222665+07:00;</History>
+    <LastFailureDetails />
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>workstation id=StoreManagement.mssql.somee.com%3bpacket size=4096%3buser id=congthien11_SQLLogin_1%3bpwd=1c711ha5ji%3bdata source=StoreManagement.mssql.somee.com%3bpersist security info=False%3binitial catalog=StoreManagement%3bTrustServerCertificate=True</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

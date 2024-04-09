@@ -7,7 +7,7 @@
 @model StoreManagement.DTO.MenuDTO
 
 <div class="container">
-    <h2>Edit Table</h2>
+    <p>Chỉnh sửa thông tin</p>
     <form asp-action="Update" method="post">
         <input type="hidden" asp-for="Id" />
         <div class="form-group">
@@ -15,10 +15,10 @@
             <input asp-for="StoreId" class="form-control" />
             <span asp-validation-for="StoreId" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a asp-controller="ManagementMenu" asp-action="Index">
-        <button type="button" class="btn btn-info">Return Menu</button>
-    </a>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="/owner/managementmenu" class="btn btn-info">Return Menu</a>
+        </div>
     </form>
 </div>
 @section Scripts{
@@ -26,3 +26,4 @@
         <partial name="_ValidationScriptsPartial" />
     }
 }
+

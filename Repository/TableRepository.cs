@@ -55,6 +55,12 @@ namespace StoreManagement.Repository
             return list.ToList();
         }
 
+        public async Task<List<Table>> GetAllByStoreId(int id)
+        {
+            var list = await _context.Tables.Where(x => x.StoreID == id).ToListAsync();
+            return list.ToList();
+        }
+
         public Task<Table> GetById(int id, bool incluDeleted = false)
         {
             var table = _context.Tables.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();

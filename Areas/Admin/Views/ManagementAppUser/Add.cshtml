@@ -5,43 +5,84 @@
 }
 @model StoreManagement.Models.AppUser
 @using Microsoft.AspNetCore.Mvc.Rendering
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, StoreManagement
+
+<div class="user container border shadow rounded-3 p-4">
+    <header class="fw-bold fs-5 text-center text-black mb-2">Thêm người dùng</header>
+    <div class="user--form">
+        <form action="Add" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-lg-2">
+                    <label asp-for="RoleId">Role</label>
+                    <select asp-for="RoleId" class="form-control">
+                        <option value="2">Owner</option>
+                    </select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="w-100 mt-3">
+                <button type="submit" class="btn btn-primary-custom">Thêm mới</button>
+                <a href="/admin/home" class="btn btn-danger">Trở về</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
 @{
-    ViewData["Title"] = "Add User";
+    if (ViewBag.Error != null)
+    {
+        <div class="show-toast position-fixed bottom-0 end-0 p-3">
+            <vc:toast-component></vc:toast-component>
+        </div>
+    }
 }
 
-<h2>Add User</h2>
-<form asp-action="Add" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="RoleId">Role</label>
-        <select asp-for="RoleId" class="form-control">
-            <option value="2">Owner</option>
-        </select>
-        <span asp-validation-for="RoleId" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
-</form>
+<style>
+    .user {
+        height: 400px;
+        width: 1000px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    .user .form-group {
+        margin-bottom: 12px;
+    }
+</style>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -4,6 +4,6 @@
 .form--wrapper {
     width: 500px;
     height: 350px;
-    background-color: red;
+    background-color: var(--blue-gradient);
 }
 

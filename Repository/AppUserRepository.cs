@@ -34,9 +34,15 @@ namespace StoreManagement.Repository
             return list.ToList();
         }
 
-        public Task<AppUser> GetById(int id, bool incluDeleted = false)
+        public async Task<AppUser> GetByEmailAsync(string email)
         {
-            var user =  _context.AppUsers.FirstOrDefaultAsync(obj => obj.Id == id && obj.IsDeleted == incluDeleted);
+            var user = await _context.AppUsers.FirstOrDefaultAsync(obj => obj.Email == email && obj.IsDeleted == false) ;
+            return user;
+        }
+
+        public async Task<AppUser> GetById(int id, bool incluDeleted = false)
+        {
+            var user = await _context.AppUsers.FirstOrDefaultAsync(obj => obj.Id == id && obj.IsDeleted == incluDeleted);
             return user;
         }
 
