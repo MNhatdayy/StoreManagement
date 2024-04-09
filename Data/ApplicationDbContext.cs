@@ -19,13 +19,14 @@ namespace StoreManagement.Data
         public DbSet<MenuDetail> MenuDetails { get; set; }
         public DbSet<FoodItem> FoodItems { get; set; }
         public DbSet<FoodCategory> FoodCategories { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MenuDetail>()
                  .HasKey(m => new { m.FoodItemId, m.MenuId });
 
             modelBuilder.Entity<OrderDetail>()
-                .HasKey(m=> new { m.OderId, m.FoodId });
+                .HasKey(m=> new { m.OrderId, m.FoodId });
 
             modelBuilder.Entity<FoodCategory>()
                 .HasOne(fc => fc.Store)

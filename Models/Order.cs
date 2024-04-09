@@ -11,6 +11,8 @@ namespace StoreManagement.Models
         public DateTime Created { get; set; } = DateTime.Now;
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual Invoice Invoice { get; set; }
+        public bool StatusPay {  get; set; }
+        public bool status {  get; set; }
 
     }
 }
