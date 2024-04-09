@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Update FoodCategory";
+}
+@model StoreManagement.DTO.FoodCategoryDTO
+
+<div class="container">
+    <h2>Edit FoodCategory</h2>
+    <form asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger" ></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="StoreId"></label>
+            <input asp-for="StoreId" class="form-control" />
+            <span asp-validation-for="StoreId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button asp-action="Index" type="submit" class="btn btn-info">Cancel</button>
+    </form>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
