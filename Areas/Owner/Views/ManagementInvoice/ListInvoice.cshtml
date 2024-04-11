@@ -27,7 +27,7 @@
                     <td>@invoice.Charge</td>
                     <td>@invoice.TotalPrice</td>
                     <td>
-                        <a href="@Url.Action("InvoiceDetails", "ManagementInvoice", new { id = invoice.Id })" class="btn btn-primary">
+                        <a href="/owner/ManagementInvoice/InvoiceDetails/@invoice.Id" class="btn btn-primary">
                             View
                         </a>
                     </td>

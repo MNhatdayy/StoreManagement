@@ -10,12 +10,14 @@ namespace StoreManagement.Areas.Owner.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IInvoiceService _invoiceService;
+        private readonly ITableService _tableService;
         int idStore = 1;
         int idTable = 1;
-        public ManagementInvoiceController(IOrderService orderService, IInvoiceService invoiceService)
+        public ManagementInvoiceController(IOrderService orderService, IInvoiceService invoiceService, ITableService tableService)
         {
             _orderService = orderService;
             _invoiceService = invoiceService;
+            _tableService = tableService;
         }
         public async Task<IActionResult> Index()
         {
@@ -55,13 +57,13 @@ namespace StoreManagement.Areas.Owner.Controllers
                 invoiceDTO.Status = true;
                 invoiceDTO.TotalPrice =  order.TotalPrice + invoiceDTO.Charge;
                 invoiceDTO.PayTime = DateTime.UtcNow;
-                // Gọi service để tạo invoice và lưu vào cơ sở dữ liệu
+                await _tableService.UpdateStatus(order.TableId);
                 var result = await _invoiceService.CreateAsync(invoiceDTO);
-
+                
                 if (result != null)
                 {
                     
-                    return RedirectToAction("Index", "ManagementInvoice"); 
+                    return View("Index"); 
                 }
                 else
                 {

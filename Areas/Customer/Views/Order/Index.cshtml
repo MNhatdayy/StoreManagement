@@ -34,13 +34,14 @@
                     <td width="15%"><img width="100%" src="@item.FoodItems.ImageUrl" /></td>
                     <td>@(item.FoodItems.FoodCategory?.Name)</td>
                     <td>
-                        <form method="post" action="@Url.Action("AddToCart", "Order")">
+                        <form action="/Customer/Order/AddToCart" method="post">
                             <input type="hidden" name="foodId" value="@item.FoodItemId" />
                             <input type="hidden" name="quantity" value="1" />
                             <button type="submit" class="btn btn-primary">Add To Cart</button>
                         </form>
+                        <a action="/Customer/Order/AddToCart"></a>
                     </td>
-                    
+                        
                 </tr>
             }
         </tbody>

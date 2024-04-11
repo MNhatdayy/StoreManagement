@@ -22,7 +22,7 @@ namespace StoreManagement.Controllers
             var result = await _authService.Login(loginDTO);
 
 
-            switch(result.RoleId) {
+             switch(result.RoleId) {
                 case 1:
                     {
                         await CreateCookieAsync(result);

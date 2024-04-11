@@ -72,7 +72,7 @@
             </tbody>
         </table>
     </div>
-    <form asp-action="CompleteInvoice" method="post" >
+    <form action="/owner/ManagementInvoice/CompleteInvoice" method="post">
         <div class="form-group" style="display:none">
             <input type="number" id="orderId" name="OrderId" value="@ViewBag.order.Id" class="form-control" readonly/>
         </div>

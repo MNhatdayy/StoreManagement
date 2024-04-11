@@ -63,5 +63,11 @@ namespace StoreManagement.Service
             }
             return _mapper.Map<List<TableDTO>>(tables);
         }
+
+        public async Task<TableDTO> UpdateStatus(int id)
+        {
+            var table = await tableRepository.UpdateStatus(id);
+            return _mapper.Map<TableDTO>(table);
+        }
     }
 }

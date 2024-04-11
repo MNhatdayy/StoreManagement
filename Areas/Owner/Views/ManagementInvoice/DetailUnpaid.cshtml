@@ -59,7 +59,8 @@
         </table>
     </div>
     <div>
-        <a href="@Url.Action("Create", "ManagementInvoice", new { id = Model.Id })" class="btn btn-primary">Create</a>
-        <a href="@Url.Action("Index", "ManagementInvoice")" class="btn btn-success">Cancel</a>
+        
+        <a href="owner/managementinvoice/create/@Model.Id" class="btn btn-primary">Create</a>
+        <a href="owner/managementinvoice/index" class="btn btn-success">Cancel</a>
     </div>  
 </body>

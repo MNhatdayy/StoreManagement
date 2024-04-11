@@ -55,18 +55,13 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-<<<<<<< .mine
-builder.Services.AddMemoryCache();
-builder.Services.AddSession(options =>
-{
-    
-});
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Auth/login";
     options.LogoutPath = $"/Auth/logout";
     options.LogoutPath = $"/Auth/login";
+
 
 });
 
@@ -79,33 +74,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     }
 );
 
-
-=======
-builder.Services.AddHttpClient();
-/*builder.Services.AddMemoryCache();
-builder.Services.AddSession();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> .theirs
 var app = builder.Build();
 //End
 //Seed method

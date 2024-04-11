@@ -22,19 +22,16 @@ namespace StoreManagement.Areas.Customer.Controllers
         private readonly IMenuDetailService _menuDetail;
         private readonly IMenuService _menuService;
         private readonly IFoodItemService _foodService;
-        private readonly HttpClient _httpClient;
         private readonly IOrderService _orderService;
 
         public OrderController(IMenuDetailService menuDetail,
                                 IMenuService menuService,
                                  IFoodItemService foodItemService,
-                                 HttpClient httpClient,
                                  IOrderService orderService
                                 ) { 
             _menuDetail = menuDetail;
             _menuService = menuService;
             _foodService = foodItemService;
-            _httpClient = httpClient;
             _orderService = orderService;
         }
         //--------------------- Cart-----------------------------//
@@ -53,6 +50,8 @@ namespace StoreManagement.Areas.Customer.Controllers
         [Route("/customer/order/ViewCart/1/1")]
         public IActionResult ViewCart(int idTbale, int idStore)
         {
+            ViewBag.idStore = 1;
+            ViewBag.idTable = 1;
             var cart = HttpContext.Session.Get<ShoppingCart>("Cart") ?? new ShoppingCart();
             return View(cart);
         }
@@ -94,6 +93,7 @@ namespace StoreManagement.Areas.Customer.Controllers
             HttpContext.Session.Set("Cart", cart);
             return Ok();
         }
+        [HttpGet]
         public IActionResult DeleteFromCart(int foodId)
         {
             var cart = HttpContext.Session.Get<ShoppingCart>("Cart");
@@ -117,6 +117,21 @@ namespace StoreManagement.Areas.Customer.Controllers
             }
             return Ok(); 
         }
+        
+
+
+        //---------------------End Cart-----------------------------//
+        [HttpGet]
+        [Route("/customer/order/{idStore}/{idTable}")]
+        public async Task<IActionResult> Index(int idStore, int idTable)
+        {
+            ViewBag.idStore = 1;
+            ViewBag.idTable = 1;
+            var menu = await _menuService.GetMenuByIdStore(1);
+            var menuDetail = await _menuDetail.GetMenuDetailsByMenuId(menu.Id);
+            ViewBag.menuDetail = menuDetail;
+            return View(menuDetail);
+        }
         [HttpPost]
         public async Task<IActionResult> SubmitOrderAsync(OrderDTO order)
         {
@@ -137,29 +152,18 @@ namespace StoreManagement.Areas.Customer.Controllers
                     FoodId = i.IdFood,
                     Quantity = i.Quantity,
                     Price = i.Price,
+                    Notes = i.Notes,
                 }).ToList();
                 await _orderService.CreateAsync(order);
 
                 HttpContext.Session.Remove("Cart");
 
-                return RedirectToAction("Index","Order" , new { idStore,idTable }); // Trang xác nhận hoàn thành đơn hàng
+                return RedirectToAction("Index", "Order", new { idStore, idTable }); 
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-
-        //---------------------End Cart-----------------------------//
-        [HttpGet]
-        [Route("/customer/order/{idStore}/{idTable}")]
-        public async Task<IActionResult> Index(int idStore, int idTable)
-        {
-            var menu = await _menuService.GetMenuByIdStore(idStore);
-            var menuDetail = await _menuDetail.GetMenuDetailsByMenuId(menu.Id);
-            ViewBag.menuDetail = menuDetail;
-            return View(menuDetail);
         }
     }
 }

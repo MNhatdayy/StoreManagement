@@ -10,10 +10,12 @@ namespace StoreManagement.Areas.Owner.Controllers
     {
         int idStore = 1;
         private readonly IOrderService _orderService;
+        private readonly ITableService _tableService;
 
-        public ManagementOrderController(IOrderService orderService)
+        public ManagementOrderController(IOrderService orderService, ITableService tableService)
         {
             _orderService = orderService;
+            _tableService = tableService;
         }
         [HttpGet]//ghi ra cho dep
         public async Task<IActionResult> Index()
@@ -22,13 +24,6 @@ namespace StoreManagement.Areas.Owner.Controllers
             ViewBag.orderList = order;
             ViewBag.idStore = idStore;
             return View(order);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Reload(int idStore) 
-        {
-            var order = await _orderService.GetListOrder(idStore);
-            ViewBag.idStore = idStore;
-            return RedirectToAction("Index", order);
         }
         [HttpGet]
         public async Task<IActionResult> Accept(int id)
@@ -41,6 +36,7 @@ namespace StoreManagement.Areas.Owner.Controllers
             var orderupdate = await _orderService.UpdateAsync(id);
             var orderAccepted = await _orderService.GetOrderAcceptedById(order.Id);
             var ordderDetail = await _orderService.GetListOrderDetailsByIdOrder(order.Id);
+            await _tableService.UpdateStatus(order.TableId);
             ViewBag.ordderDetail = ordderDetail;
             return View(orderAccepted);
         }
@@ -57,13 +53,13 @@ namespace StoreManagement.Areas.Owner.Controllers
             ViewBag.Id = order.Id;
             return View(order);
         }
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IActionResult> GetListOrderAccept(int id)
         {
             var order = await _orderService.GetListOrderAccept(id);
             ViewBag.IdStore = 1;
             return View(order);
-        }
+        }*/
         public async Task<IActionResult> DetailAccepted(int id)
         {
             var order = await _orderService.GetOrderAcceptedById(id);

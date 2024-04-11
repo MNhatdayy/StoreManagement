@@ -67,5 +67,21 @@ namespace StoreManagement.Repository
             return table;
 
         }
+
+        public async Task<Table> UpdateStatus(int id, bool incluDeleted = false)
+        {
+            var table = await _context.Tables.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
+            if (table.Status == false)
+            {
+                table.Status = true;
+                await _context.SaveChangesAsync();
+            }
+            else if (table.Status == true)
+            {
+                table.Status = false;
+                await _context.SaveChangesAsync();
+            }
+            return null;
+        }
     }
 }

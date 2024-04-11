@@ -30,7 +30,8 @@
                         <td>@order.TotalPrice</td>
                         <td>@order.status</td>
                         <td>
-                            <a href="@Url.Action("DetailAccepted", "ManagementOrder", new { id = order.Id })" class="btn btn-primary">
+
+                            <a href="/owner/managementorder/detailaccepted/@order.Id" class="btn btn-primary">
                                 View
                             </a>
                         </td>
@@ -47,6 +48,6 @@ else
 
 <div>
     <div>
-        <a href="@Url.Action("Index", "ManagementOrder")" class="btn btn-primary">Return </a>
+        <a href="/owner/managementorder/index" class="btn btn-primary">Return </a>
     </div>
 </div>

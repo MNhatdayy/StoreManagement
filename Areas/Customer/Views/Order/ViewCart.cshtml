@@ -27,10 +27,11 @@
                 </td>
                 <td class="total-price-food" id="total-@item.IdFood">@(item.Price * item.Quantity)</td>
                 <td>
-                    <input type="text" class="input-notes" data-food-id="@item.IdFood" placeholder="Notes..." />
+                    <input type="text" class="input-notes" name="notes" value="@item.Notes" data-food-id="@item.IdFood" placeholder="Notes..." />
                 </td>
                 <td>
-                    <form asp-action="DeleteFromCart" asp-route-foodId="@item.IdFood" method="post">
+                    <form action="/customer/order/deletefromcart" name="foodId" value="@item.IdFood" method="get">
+                        <input type="hidden" name="foodId" value="@item.IdFood" />
                         <button type="submit">Remove</button>
                     </form>
                 </td>
@@ -38,11 +39,7 @@
         }
         <tr>
             <td colspan="5">
-                @* <div class="form-group">
-                    <label asp-for="Notes">Notes</label>
-                    <textarea asp-for="Notes" class="form-control"></textarea>
-                </div> *@
-                <form asp-controller="Order" asp-action="SubmitOrder" method="post">
+                <form action="/customer/order/submitorder" method="post">
                     <button type="submit">Submit</button>
                 </form>
             </td>
@@ -50,9 +47,30 @@
     </tbody>
 </table>
 <div style="display: flex">
-    <a asp-action="OrderList" asp-controller="ShoppingCart">Your Orders</a>
+    <a href="/customer/order/@ViewBag.idStore/@ViewBag.idTable">Back To Orders</a>
 </div>
 
-@section Scripts{
-    <script src="~/js/Cart.js"></script>
-}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.input-notes').change(function () {
+            var foodId = $(this).data('food-id');
+            var notes = $(this).val();
+
+            $.ajax({
+                url: '/customer/order/submitorder',
+                type: 'POST',
+                data: {
+                    foodId: foodId,
+                    notes: notes
+                },
+                success: function (response) {
+                    console.log('Đã cập nhật ghi chú thành công!');
+                },
+                error: function (error) {
+                    console.error('Lỗi khi cập nhật ghi chú:', error);
+                }
+            });
+        });
+    });
+</script>

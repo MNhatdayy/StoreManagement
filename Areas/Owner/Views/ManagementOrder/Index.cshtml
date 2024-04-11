@@ -5,7 +5,6 @@
 }
 
 <h1>Order Management</h1>
-
 @if (Model != null && Model.Any())
 {
     <div class="table-responsive">
@@ -30,13 +29,13 @@
                         <td>@order.TotalPrice</td>
                         <td>@order.status</td>
                         <td>
-                            <a href="@Url.Action("Detail", "ManagementOrder", new { id = order.Id })" class="btn btn-primary">
+                            <a href="/Owner/ManagementOrder/Detail/@order.Id"  class="btn btn-primary">
                                 View
                             </a>
-                            <a href="@Url.Action("Accept", "ManagementOrder", new { id = order.Id })" class="btn btn-success">
+                            <a href="/Owner/ManagementOrder/Accept/@order.Id" class="btn btn-success">
                                 Accept
                             </a>
-                            <a href="@Url.Action("Denied", "ManagementOrder", new { id = order.Id })" class="btn btn-danger">
+                            <a href="/Owner/ManagementOrder/Denied/@order.Id" class="btn btn-danger">
                                 Denied
                             </a>
                         </td>
@@ -51,9 +50,6 @@ else
     <p>No orders found.</p>
 }
 
-<div>
-    <a href="@Url.Action("Reload", "ManagementOrder", new { id =  1 })" class="btn btn-success">Reload Order</a>
-</div>
-<div>
-    <a href="@Url.Action("GetListOrderAccept", "ManagementOrder", new { id =  1 })" class="btn btn-primary">List Order</a>
-</div>
+
+    
+    <a href="/Owner/ManagementOrder/Index"  class="btn btn-success">Reload Order</a>

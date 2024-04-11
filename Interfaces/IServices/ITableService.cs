@@ -9,7 +9,7 @@ namespace StoreManagement.Interfaces.IServices
         Task<TableDTO> GetById(int id, bool incluDeleted = false);
         Task<TableDTO> Edit(int id, TableDTO tableDTO, bool incluDeleted = false);
         Task<bool> Delete(int id, bool incluDeleted = false);
-
+        Task<TableDTO> UpdateStatus(int id);
         Task<List<TableDTO>> GetTablesByListId(List<int> ids);
     }
 }
