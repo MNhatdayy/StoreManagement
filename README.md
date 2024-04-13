@@ -1,2 +1,2 @@
-StoreManagement
-C#
+# StoreManagement
+C# Web MVC
