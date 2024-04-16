@@ -3,8 +3,6 @@ using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
-using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace StoreManagement.Service
 {

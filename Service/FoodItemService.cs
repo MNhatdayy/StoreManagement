@@ -3,7 +3,6 @@ using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
-using StoreManagement.Repository;
 
 namespace StoreManagement.Service
 {
@@ -48,9 +47,9 @@ namespace StoreManagement.Service
             return _mapper.Map<FoodItemDTO>(foodItem);
         }
 
-        public async Task<List<FoodItemDTO>> GetAll()
+        public async Task<List<FoodItemDTO>> GetAll(List<int> categoriesId)
         {
-            var list = await foodItemRepository.GetAll();
+            var list = await foodItemRepository.GetAll(categoriesId);
             return _mapper.Map<List<FoodItemDTO>>(list);
         }
 
@@ -70,9 +69,9 @@ namespace StoreManagement.Service
             return null;
         }
 
-        public async Task<string> SaveImages(string url, IFormFile uFile)
+        public async Task<string> SaveImages(IFormFile uFile)
         {
-            var urlfile = await foodItemRepository.SaveImage(url, uFile);
+            var urlfile = await foodItemRepository.SaveImage( uFile);
             return urlfile;
         }
     }

@@ -22,17 +22,12 @@
         return false;
     }
 }
-@{
-    //lấy giá trị của tham số từ URL bằng cách sử dụng ViewContext
-    var menuId = ViewContext.HttpContext.Request.Query["menuId"];
-    var storeId = ViewBag.StoreId;
-}
-<h2>Add Menu Item</h2>
+
+<h2>Thêm món ăn</h2>
 <form asp-action="AddMenuItem" method="post">
     <div class="form-group">
-        <input type="hidden" id="storeId" name="storeId">
-        <label for="menuId">Menu ID</label>
-        <input type="text" class="form-control" id="menuId" name="menuId">
+        <input type="hidden" id="@ViewBag.storeId" name="storeId">
+        <input type="hidden" class="form-control" value="@ViewBag.MenuId" name="menuId">
     </div>
     <div class="form-group">
         <label for="foodItemId">Select Food Item:</label>
@@ -40,7 +35,7 @@
             @foreach (var foodItem in ViewBag.FoodItems)
             {
                 // Kiểm tra nếu món đã tồn tại trong danh sách menuDetail
-                var existsInMenuDetail = ExistsInMenuDetail(int.Parse(menuId), int.Parse(foodItem.Value), storeId);
+                var existsInMenuDetail = ExistsInMenuDetail(ViewBag.MenuId, int.Parse(foodItem.Value), ViewBag.StoreId);
                 // Nếu món chưa tồn tại, hiển thị trong dropdown
                 if (!existsInMenuDetail)
                 {
@@ -49,10 +44,11 @@
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
-    <a asp-controller="ManagementMenu" asp-action="Index">
-        <button type="button" class="btn btn-info">Return Menu</button>
-    </a>
+    <div class="d-flex align-items-center gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Thêm</button>
+        <a href="/owner/managementMenuDetail/GetMenuItem/@ViewBag.MenuId" class="btn btn-info">Trở về</a>
+    </div> 
+    
 </form>
 <script>
     // Lấy giá trị menuId từ URL và điền vào trường input menuId

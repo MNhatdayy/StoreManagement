@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Service;
 
 namespace StoreManagement.Controllers
 {

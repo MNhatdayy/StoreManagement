@@ -8,46 +8,80 @@
 @{
     ViewData["Title"] = "MenuDetail";
 }
+<div class="container py-4 vh-100">
+    <h2 class="text-center bg-gradient-custom text-white px-2 py-1">@ViewBag.StoreName</h2>
+    <div class="h-100">
+        <div class="customer-order py-3">
+            <div class="order-header d-flex justify-content-between">
 
-<h1>Menu</h1>
+                <a href="/customer/order/ViewCart/@ViewBag.idStore/@ViewBag.idTable" class="btn btn-primary-custom text-white d-flex align-items-center gap-2" aria-current="page">
+                    <i class='bx bx-user'></i>
+                    Xem giỏ hàng
+                </a>
+                <div>
+                    <a href="#" class="btn btn-danger">Gọi nhân viên</a>
+                    <a href="#" class="btn btn-success">Thanh toán</a>
+                </div>
 
-@if (Model != null && Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Picture</th>
-                <th>FoodCategory</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+            </div>
+        </div>
+        <h1>Menu</h1>
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên món ăn</th>
+                        <th>Giá</th>
+                        <th>Hình Ảnh</th>
+                        <th>-</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FoodItems.Name</td>
+                            <td>@item.FoodItems.Price</td>
+                            <td><img width="100%" src="@item.FoodItems.ImageUrl" /></td>
+                            <td width="15%">
+                                <form action="/customer/order/AddToCart" method="post">
+                                    <input type="hidden" name="idStore" value="@ViewBag.idStore" />
+                                    <input type="hidden" name="idTable" value="@ViewBag.idTable" />
+                                    <input type="hidden" name="foodId" value="@item.FoodItemId" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button type="submit" class="btn btn-primary-custom">Thêm</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (ViewBag.Note != null)
             {
-                <tr>
-                    <td>@item.FoodItems.Name</td>
-                    <td>@item.FoodItems.Price</td>
-                    <td>@item.FoodItems.Description</td>
-                    <td width="15%"><img width="100%" src="@item.FoodItems.ImageUrl" /></td>
-                    <td>@(item.FoodItems.FoodCategory?.Name)</td>
-                    <td>
-                        <form action="/Customer/Order/AddToCart" method="post">
-                            <input type="hidden" name="foodId" value="@item.FoodItemId" />
-                            <input type="hidden" name="quantity" value="1" />
-                            <button type="submit" class="btn btn-primary">Add To Cart</button>
-                        </form>
-                        <a action="/Customer/Order/AddToCart"></a>
-                    </td>
-                        
-                </tr>
+                <div class="show-toast position-fixed bottom-0 end-0 p-3">
+                    <vc:toast-component></vc:toast-component>
+                </div>
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No menu details available.</p>
-}
+
+        }
+        else
+        {
+            <p>No menu details available.</p>
+        }
+    </div>
+    
+</div>
+
+
+<style>
+    * {
+        font-size: 10px;
+    }
+    .btn {
+        font-size: 12px;
+        min-width: 60px;
+    }
+</style>

@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.FileProviders;
 using StoreManagement.Data;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
 
 using StoreManagement.Repository;
 using StoreManagement.Service;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,14 +92,20 @@ if (!app.Environment.IsDevelopment())
 app.MapRazorPages();
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+/*app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "upload")),
+    RequestPath = "/upload"
+});*/
 
 app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {

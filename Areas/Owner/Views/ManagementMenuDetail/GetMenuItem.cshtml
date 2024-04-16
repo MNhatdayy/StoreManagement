@@ -5,15 +5,25 @@
     ViewData["Title"] = "MenuDetail";
 }
 @model IEnumerable<StoreManagement.DTO.MenuDetailDTO>
-
 <div class="container">
     <h3>Menu</h3>
-    <a asp-controller="ManagementMenuDetail" asp-action="AddMenuItem" asp-route-menuId="@ViewBag.MenuId">
-        <button type="button" class="btn btn-primary">Add Item</button>
-    </a>
-    <a asp-controller="ManagementMenu" asp-action="Index">
-        <button type="button" class="btn btn-primary">Return Menu</button>
-    </a>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-success save-btn">Lưu</button>
+            <a href="/owner/ManagementMenuDetail/AddMenuItem/@ViewBag.MenuId" class="btn btn-primary-custom">
+                Thêm món ăn
+            </a>
+        </div>
+        
+        <div>
+            <a href="/owner/ManagementMenuDetail/GetMenuItem/@ViewBag.MenuId" class="btn btn-red-custom">
+                Trở về
+            </a>
+        </div>
+        
+    </div>
+   
+    
     <div>
         <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%" />
     </div>
@@ -40,15 +50,16 @@
                     <td width="15%"><img width="100%" src="@menuDetail.FoodItems.ImageUrl" /></td>
                     <td>@(menuDetail.FoodItems.FoodCategory?.Name)</td>
                     <td>
-                        <a asp-action="Delete" asp-route-menuId="@menuDetail.MenuId" asp-route-foodItemId="@menuDetail.FoodItemId">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </a>
+                        <form action="/owner/managementMenuDetail/DeleteConfirmed" method="post">
+
+                            <input type="hidden" value="@menuDetail.MenuId" name="menuId" />
+                            <input type="hidden" value="@menuDetail.FoodItemId" name="foodItemId" />
+
+                            <button type="submit" class="btn btn-red-custom">Xóa</button>
+                        </form>
                     </td>
                 </tr>
             }
-                <td colspan="7">
-                    <button type="button" class="btn btn-success save-btn">Save</button>
-                </td>
         </tbody>
     </table>  
 </div>

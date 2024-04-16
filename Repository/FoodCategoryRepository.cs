@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StoreManagement.Data;
+using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Models;
 
@@ -50,19 +51,25 @@ namespace StoreManagement.Repository
             return foodCategories;
         }
 
-        public async Task<List<FoodCategory>> GetAll(bool incluDeleted = false)
+        public async Task<List<FoodCategory>> GetAll(List<int> StoreId, bool incluDeleted = false)
         {
-            if (!incluDeleted)
+            List<FoodCategory> categories = new List<FoodCategory>();
+            foreach (int id in StoreId)
             {
-                var list = new List<FoodCategory>();
-                list = await _context.FoodCategories.Where(m => !m.IsDeleted).Include(m => m.Store).ToListAsync();
-                return list.ToList();
+                var temp = _context.FoodCategories.Where(m => m.StoreId == id && m.IsDeleted == incluDeleted).ToList();
+                if (temp != null)
+                {
+                    categories.AddRange(temp);
+                }
+            }
+            if (categories.Count > 0)
+            {
+                return categories;
+
             }
             else
             {
-                var list = new List<FoodCategory>();
-                list = await _context.FoodCategories.Include(m => m.Store).ToListAsync();
-                return list.ToList();
+                return null;
             }
         }
 
@@ -71,5 +78,11 @@ namespace StoreManagement.Repository
             var foodCategory = _context.FoodCategories.Where(obj => obj.Id == id && obj.IsDeleted == incluDeleted).FirstOrDefaultAsync();
             return foodCategory;
         }
+        public List<FoodCategory> GetByStoreId(int id, bool incluDeleted = false)
+        {
+            List<FoodCategory> foodCategory = _context.FoodCategories.Where(obj => obj.StoreId == id && obj.IsDeleted == incluDeleted).ToList();
+            return foodCategory;
+        }
+
     }
 }

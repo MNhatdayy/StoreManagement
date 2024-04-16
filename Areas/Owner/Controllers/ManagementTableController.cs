@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IronBarCode;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
-using StoreManagement.DTO.AuthDTO;
 using StoreManagement.Interfaces.IServices;
-using System.Net;
 using System.Security.Claims;
 
 namespace StoreManagement.Areas.Owner.Controllers
@@ -14,17 +13,19 @@ namespace StoreManagement.Areas.Owner.Controllers
 
     public class ManagementTableController : Controller
     {
-
+        private readonly IWebHostEnvironment _env;
         private readonly ITableService _tableService;
         private readonly IStoreService _storeService;
         private int userId;
 
 
         public ManagementTableController(ITableService tableService,
-                                         IStoreService storeService)
+                                         IStoreService storeService,
+                                         IWebHostEnvironment env)
         {
             _tableService = tableService;
             _storeService = storeService;
+            _env = env;
         }
 
         public async Task<IActionResult> Index()
@@ -33,6 +34,8 @@ namespace StoreManagement.Areas.Owner.Controllers
             var listStore = await _storeService.GetStoresByUserId(userId);
             List<int> ints = listStore.Select(x => x.Id).ToList();
             var table = await _tableService.GetTablesByListId(ints);
+            var path = _env.WebRootPath;
+            ViewBag.Path = path;
             return View(table);
         }
 
@@ -51,8 +54,9 @@ namespace StoreManagement.Areas.Owner.Controllers
         {
             if(ModelState.IsValid)
             {
-                await _tableService.Create(tableDTO);
-                return Redirect("/owner/managementtable/index");
+                var table = await _tableService.Create(tableDTO);
+                GenerateQR(table.StoreID, table.Id);
+                return Redirect("/owner/ManagementTable/index");
             }
             return View(tableDTO);
         }
@@ -83,7 +87,7 @@ namespace StoreManagement.Areas.Owner.Controllers
                 {
                     return NotFound();
                 }
-                return RedirectToAction("Index");
+                return Redirect("/owner/ManagementTable/index");
             }
             return View(tableDTO);
         }
@@ -103,7 +107,22 @@ namespace StoreManagement.Areas.Owner.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _tableService.Delete(id);
-            return RedirectToAction("Index");
+            return Redirect("/owner/ManagementTable/index");
+        }
+
+        private void GenerateQR(int idStore, int idTable)
+        {
+            string url = "http://thien027170-001-site1.gtempurl.com/customer/order/" + idStore + "/" + idTable;
+            string path = "wwwroot/images/QRTable/";
+            string fileName = idTable.ToString() + ".png";
+            // Tạo mã QR từ URL được cung cấp
+            GeneratedBarcode barcode = QRCodeWriter.CreateQrCode(url, 250);
+            barcode.SetMargins(10);
+
+            barcode.SaveAsImage(path + fileName);
+
+            Path.Combine(path, fileName);
+
         }
     }
 }

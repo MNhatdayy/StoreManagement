@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
@@ -6,21 +7,28 @@ using StoreManagement.Interfaces.IServices;
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "2")]
     public class ManagementMenuDetailController : Controller
     {
         private readonly IMenuDetailService _menuDetailService;
         private readonly IMenuService _menuService;
         public readonly IFoodItemService _foodItemService;
         public readonly IFoodCategoryService _foodCategoryService;
-        public ManagementMenuDetailController(IMenuDetailService menuDetailService, 
-            IMenuService menuService, 
-            IFoodItemService foodItemService, 
-            IFoodCategoryService foodCategoryService)
+        private readonly IAppUserService _appUserService;
+        private readonly IStoreService _storeService;
+        public ManagementMenuDetailController(IMenuDetailService menuDetailService,
+            IMenuService menuService,
+            IFoodItemService foodItemService,
+            IFoodCategoryService foodCategoryService,
+            IAppUserService appUserService,
+            IStoreService storeService)
         {
             _menuDetailService = menuDetailService;
             _menuService = menuService;
             _foodItemService = foodItemService;
             _foodCategoryService = foodCategoryService;
+            _appUserService = appUserService;
+            _storeService = storeService;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -30,6 +38,7 @@ namespace StoreManagement.Areas.Owner.Controllers
         }
 
         [HttpGet]
+        [Route("/owner/managementmenudetail/getmenuitem/{menuId:int}")]
         public async Task<IActionResult> GetMenuItem(int menuId)
         {
             try
@@ -45,6 +54,8 @@ namespace StoreManagement.Areas.Owner.Controllers
             }
         }
         [HttpGet]
+        [Route("/owner/managementmenudetail/addmenuitem/{menuId:int}")]
+
         public async Task<IActionResult> AddMenuItem(int menuId)
         {
             try
@@ -57,9 +68,12 @@ namespace StoreManagement.Areas.Owner.Controllers
 
                 var storeId = menu.StoreId;
                 ViewBag.StoreId = storeId;
+                ViewBag.MenuId = menu.Id;
 
-                var foodCategory = await _foodCategoryService.GetAll();
-                var foodItems = await _foodItemService.GetAll();
+                var foodCategory = await _foodCategoryService.GetByStoreId(storeId);
+
+
+                var foodItems = await _foodItemService.GetAll(foodCategory.Select(x => x.Id).ToList());
                 var filteredFoodItems = foodItems.Where(item => foodCategory.Any(fc => fc.Id == item.FoodCategoryId && fc.StoreId == storeId));
                 ViewBag.FoodItems = filteredFoodItems.Select(item => new SelectListItem { Value = item.Id.ToString(), Text = item.Name }).ToList();
 
@@ -106,7 +120,8 @@ namespace StoreManagement.Areas.Owner.Controllers
                     return BadRequest("Failed to add menu item");
                 }
 
-                return RedirectToAction("GetMenuItem", new { menuId = menuId });
+                return Redirect("/owner/managementmenudetail/GetMenuItem/" + menuId);
+
             }
             catch (Exception ex)
             {
@@ -129,7 +144,7 @@ namespace StoreManagement.Areas.Owner.Controllers
         public async Task<ActionResult> DeleteConfirmed(int menuId, int foodItemId)
         {
             await _menuDetailService.Delete(menuId, foodItemId);
-            return RedirectToAction("GetMenuItem", new { menuId = menuId });
+            return Redirect("/owner/managementmenudetail/GetMenuItem/" + menuId);
         }
 
         [HttpPost]

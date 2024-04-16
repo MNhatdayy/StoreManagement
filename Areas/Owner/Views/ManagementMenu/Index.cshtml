@@ -10,7 +10,9 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
 -> CRUD sẽ vào các route để Add/Create/Edit/Delete
 -> Các món cần ẩn/hiện ở menu người dùng *@
 @model IEnumerable<StoreManagement.DTO.MenuDTO>
-<div class="container d-flex align-items-center h-100">
+@if (Model != null && Model.Any())
+{
+    <div class="container d-flex align-items-center h-100 w-100">
     <div class="management--wrapper">
         <div class="actions">
             <div class="action-search">
@@ -31,7 +33,7 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
     
         <div class="content">
         <div class="container mt-5 px-2"> 
-            <div class="table-responsive border-3">
+            <div class="table--wrapper border-3">
                     <table class="table table-responsive">
                         <thead>
                             <tr class="bg-light">
@@ -48,7 +50,8 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
                                     <td>@item.Store.StoreName</td>
                                     <td>@item.CreateTime</td>
                                     <td>
-                                        <a href="/owner/managementmenu/update/@item.Id" class="btn btn-primary-custom">Chỉnh sửa</a>
+                                        <a href="/owner/managementmenudetail/GetMenuItem/@item.Id" class="btn btn-primary-custom">Thêm món ăn</a>
+                                        @* <a href="/owner/managementmenu/update/@item.Id" class="btn btn-primary-custom">Chỉnh sửa</a> *@
                                         <buton type="buton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-@item.Id">Xóa</buton>
                                     </td>
                                 </tr>
@@ -79,7 +82,40 @@ Một cái grid view hiển thị các đồ ăn, add đồ ăn vào Menu, có C
         </div>
     </div>
     </div>
+    </div>
+}
+else
+{
+    <div class="container d-flex align-items-center h-100">
+    <div class="management--wrapper">
+        <div class="actions">
+            <div class="action-search">
+                <form asp-action="Search" method="post">
+                    <div class="form-group w-100">
+                        <div class="d-flex align-items-center gap-2">
+                            <label>Tìm kiếm </label>
+                            <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%"/>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="action-add">
+                <a href="/owner/managementmenu/create" class="btn btn-red-custom d-flex gap-2 align-items-center"> <i class='bx bx-plus'></i> <span>Thêm menu</span></a>
+            </div>
+        </div>
+    
+        <div class="content">
+        <div class="container mt-5 px-2"> 
+            <div class="table-responsive border-3">
+                    <p>Không có Menu nào trong quán</p>
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
+}
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         $('#txtSearch').keyup(function () {

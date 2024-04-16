@@ -1,44 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Models;
+using System.Security.Claims;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "2")]
     public class ManagementInvoiceController : Controller
     {
         private readonly IOrderService _orderService;
         private readonly IInvoiceService _invoiceService;
         private readonly ITableService _tableService;
-        int idStore = 1;
-        int idTable = 1;
-        public ManagementInvoiceController(IOrderService orderService, IInvoiceService invoiceService, ITableService tableService)
+        private readonly IStoreService _storeService;
+        int storeId;
+        public ManagementInvoiceController(IOrderService orderService, IInvoiceService invoiceService, ITableService tableService, IStoreService storeService)
         {
             _orderService = orderService;
             _invoiceService = invoiceService;
             _tableService = tableService;
+            _storeService = storeService;
         }
         public async Task<IActionResult> Index()
         {
-            var order = await _orderService.GetListOrderAccept(1);
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var listStore = await _storeService.GetStoresByUserId(userId);
+            storeId = listStore.Select(x => x.Id).FirstOrDefault();
+
+            var order = await _orderService.GetListOrderAccept(storeId);
             ViewBag.orderList = order;
-            ViewBag.idStore = idStore;
+            ViewBag.idStore = storeId;
             return View(order);
         }
         [HttpGet]
         public async Task<IActionResult> GetListOrderAccept(int id)
         {
             var order = await _orderService.GetListOrderAccept(id);
-            ViewBag.IdStore = 1;
+            ViewBag.IdStore = storeId;
             return View(order);
         }
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
             var order = await _orderService.GetOrderAcceptedById(id);
-            var ordderDetail = await _orderService.GetListOrderDetailsByIdOrder(id);
-            ViewBag.OrderDetails = ordderDetail;
+            var orderDetails = await _orderService.GetListOrderDetailsByIdOrder(id);
+            ViewBag.OrderDetail = orderDetails;
             if (order == null)
             {
                 return NotFound();
@@ -55,7 +62,10 @@ namespace StoreManagement.Areas.Owner.Controllers
                 var order = await _orderService.GetOrderAcceptedById(invoiceDTO.OrderId);
                 await _orderService.UpdatePayAsync(invoiceDTO.OrderId);
                 invoiceDTO.Status = true;
-                invoiceDTO.TotalPrice =  order.TotalPrice + invoiceDTO.Charge;
+                if (invoiceDTO.Charge > 0)
+                {
+                    invoiceDTO.TotalPrice = order.TotalPrice + invoiceDTO.Charge;
+                }
                 invoiceDTO.PayTime = DateTime.UtcNow;
                 await _tableService.UpdateStatus(order.TableId);
                 var result = await _invoiceService.CreateAsync(invoiceDTO);
@@ -63,7 +73,7 @@ namespace StoreManagement.Areas.Owner.Controllers
                 if (result != null)
                 {
                     
-                    return View("Index"); 
+                    return Redirect("/owner/ManagementInvoice/ListInvoice"); 
                 }
                 else
                 {
@@ -75,7 +85,10 @@ namespace StoreManagement.Areas.Owner.Controllers
         [HttpGet]
         public async Task<IActionResult> ListInvoice()
         {
-            var list = await _invoiceService.GetAllPaidAsync(idStore);
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var listStore = await _storeService.GetStoresByUserId(userId);
+            storeId = listStore.Select(x => x.Id).FirstOrDefault();
+            var list = await _invoiceService.GetAllPaidAsync(storeId);
             
             return View(list);      
         }

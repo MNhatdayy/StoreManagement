@@ -17,22 +17,23 @@ namespace StoreManagement.Areas.Customer.Controllers
     [Area("Customer")]
     public class OrderController : Controller
     {
-        int idStore = 1;
-        int idTable = 1;
         private readonly IMenuDetailService _menuDetail;
         private readonly IMenuService _menuService;
         private readonly IFoodItemService _foodService;
         private readonly IOrderService _orderService;
+        private readonly IStoreService _storeService;
 
         public OrderController(IMenuDetailService menuDetail,
                                 IMenuService menuService,
                                  IFoodItemService foodItemService,
-                                 IOrderService orderService
-                                ) { 
+                                 IOrderService orderService,
+                                 IStoreService storeService)
+        {
             _menuDetail = menuDetail;
             _menuService = menuService;
             _foodService = foodItemService;
             _orderService = orderService;
+            _storeService = storeService;
         }
         //--------------------- Cart-----------------------------//
         public List<CartItem> Carts
@@ -47,21 +48,19 @@ namespace StoreManagement.Areas.Customer.Controllers
                 return data;
             }
         }
-        [Route("/customer/order/ViewCart/1/1")]
-        public IActionResult ViewCart(int idTbale, int idStore)
+        [Route("/customer/order/ViewCart/{idStore:int}/{idTable:int}")]
+        public IActionResult ViewCart(int idStore, int idTable)
         {
-            ViewBag.idStore = 1;
-            ViewBag.idTable = 1;
+            ViewBag.idTable = idTable;
+            ViewBag.idStore = idStore;
             var cart = HttpContext.Session.Get<ShoppingCart>("Cart") ?? new ShoppingCart();
             return View(cart);
         }
 
-        public async Task<IActionResult> AddToCart(int foodId, int quantity)
+        public async Task<IActionResult> AddToCart(int idStore, int idTable, int foodId, int quantity)
         {
             
             var foodItem = await _foodService.GetById(foodId);
-
-
             if (foodItem == null)
             {
                 return RedirectToAction("Index", "Order", new { idStore, idTable});
@@ -76,7 +75,7 @@ namespace StoreManagement.Areas.Customer.Controllers
                 Picture = foodItem.ImageUrl,
             };
             cart.AddItem(cartItem);
-
+            ViewBag.Note = "success";
             HttpContext.Session.Set("Cart", cart);
 
             return RedirectToAction("Index", "Order", new { idStore , idTable });
@@ -94,7 +93,7 @@ namespace StoreManagement.Areas.Customer.Controllers
             return Ok();
         }
         [HttpGet]
-        public IActionResult DeleteFromCart(int foodId)
+        public IActionResult DeleteFromCart(int idStore, int idTable, int foodId)
         {
             var cart = HttpContext.Session.Get<ShoppingCart>("Cart");
             var itemToDelete = cart.Items.FirstOrDefault(obj => obj.IdFood == foodId);
@@ -122,18 +121,20 @@ namespace StoreManagement.Areas.Customer.Controllers
 
         //---------------------End Cart-----------------------------//
         [HttpGet]
-        [Route("/customer/order/{idStore}/{idTable}")]
+        [Route("/customer/order/{idStore:int}/{idTable:int}")]
         public async Task<IActionResult> Index(int idStore, int idTable)
         {
-            ViewBag.idStore = 1;
-            ViewBag.idTable = 1;
-            var menu = await _menuService.GetMenuByIdStore(1);
+            ViewBag.idTable = idTable;
+            ViewBag.idStore = idStore;  
+            var store = await _storeService.GetByIdAsync(idStore);
+            ViewBag.StoreName = store.StoreName;
+            var menu = await _menuService.GetMenuByIdStore(idStore);
             var menuDetail = await _menuDetail.GetMenuDetailsByMenuId(menu.Id);
             ViewBag.menuDetail = menuDetail;
             return View(menuDetail);
         }
         [HttpPost]
-        public async Task<IActionResult> SubmitOrderAsync(OrderDTO order)
+        public async Task<IActionResult> SubmitOrderAsync(int idStore, int idTable, OrderDTO order)
         {
             try
             {

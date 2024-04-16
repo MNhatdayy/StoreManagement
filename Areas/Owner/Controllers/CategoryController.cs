@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Service;
+using System.Security.Claims;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
@@ -9,19 +10,31 @@ namespace StoreManagement.Areas.Owner.Controllers
     public class CategoryController : Controller
     {
         public readonly IFoodCategoryService _foodCategoryService;
-
-        public CategoryController(IFoodCategoryService foodCategoryService)
+        private readonly IAppUserService _appUserService;
+        private readonly IStoreService _storeService;
+        public CategoryController(IFoodCategoryService foodCategoryService, IStoreService storeService, IAppUserService appUserService)
         {
-            this._foodCategoryService = foodCategoryService;
+            _foodCategoryService = foodCategoryService;
+            _storeService = storeService;
+            _appUserService = appUserService;
         }
         public async Task<ActionResult> Index()
         {
-            var foodCategory = await _foodCategoryService.GetAll();
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+
+            var countStore = await _storeService.GetStoresByUserId(userId);
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+
             return View(foodCategory);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var listStore = await _storeService.GetStoresByUserId(userId);
+
+            ViewBag.List = new SelectList(listStore, "Id", "StoreName");
             return View();
         }
 
@@ -31,7 +44,7 @@ namespace StoreManagement.Areas.Owner.Controllers
             if (ModelState.IsValid)
             {
                 await _foodCategoryService.Create(foodCategoryDTO);
-                return RedirectToAction("Index");
+                return Redirect("/owner/category/index");
             }
             return View(foodCategoryDTO);
         }
@@ -61,7 +74,7 @@ namespace StoreManagement.Areas.Owner.Controllers
                 {
                     return NotFound();
                 }
-                return RedirectToAction("Index");
+                return Redirect("/owner/category/index");
             }
             return View(foodCategoryDTO);
         }
@@ -81,7 +94,7 @@ namespace StoreManagement.Areas.Owner.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _foodCategoryService.Delete(id);
-            return RedirectToAction("Index");
+            return Redirect("/owner/category/index");
         }
 
     }

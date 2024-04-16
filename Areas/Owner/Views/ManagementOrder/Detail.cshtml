@@ -4,60 +4,75 @@
     ViewData["Title"] = "Order Details";
 }
 
-<div class="container">
-    <h1>Order Details</h1>
+<div class="container mt-4">
 
-    <div>
-        <h3>Order Information</h3>
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th>Order ID:</th>
-                    <td>@Model.Id</td>
-                </tr>
-                <tr>
-                    <th>Table ID:</th>
-                    <td>@Model.TableId</td>
-                </tr>
-                <tr>
-                    <th>Created Date:</th>
-                    <td>@Model.Created.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                </tr>
-                <tr>
-                    <th>Total Price:</th>
-                    <td>@Model.TotalPrice</td>
-                </tr>
-                <tr>
-                    <th>Status:</th>
-                    <td>@Model.status</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h3 class="text-center">Thông tin chi tiết đơn đặt hàng</h3>
+    <div class="order-detail mt-2">
+        <div class="detail-info">
+            <div class="row">
+                <div class="col-3 fw-bold">
+                    Mã đơn đặt hàng: @Model.Id
+                </div>
+                <div class="col-3 fw-bold">
+                    Số bàn: @Model.TableId
+                </div>
+                <div class="col-3 fw-bold">
+                    Ngày tạo: @Model.Created.ToString("HH:mm:ss dd-MM-yyyy")
+                </div>
+                <div class="col-3 fw-bold d-flex align-items-center gap-2">
+                    Trạng thái: @{
+                        if (@Model.status)
+                        {
+                            <span class="badge bg-success">Đã tiếp nhận</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Chưa tiếp nhận</span>
 
-    <div>
-        <h3>Order Items</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Food Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var orderDetail in ViewBag.OrderDetails)
-                {
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="detail-item mt-4">
+            <div class="d-flex justify-content-between">
+                <h3>Danh sách món ăn</h3>
+
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/Owner/ManagementOrder/Accept/@ViewBag.Id" class="btn btn-primary-custom">Chấp nhận</a>
+
+                    <a href="/Owner/ManagementOrder" class="btn btn-red-custom">Trở về</a>
+                </div>
+
+            </div>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@orderDetail.FoodItem.Name</td>
-                        <td>@orderDetail.Quantity</td>
-                        <td>@orderDetail.Price</td>
+                        <th>Tên món ăn</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var orderDetail in ViewBag.OrderDetails)
+                    {
+                        <tr style="height: 40px;">
+                            <td>@orderDetail.FoodItem.Name</td>
+                            <td>@orderDetail.Quantity</td>
+                            <td>@orderDetail.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <a href="/Owner/ManagementOrder" class="btn btn-primary">Back to Orders</a>
-    <a href="/Owner/ManagementOrder/Accept/@ViewBag.Id" class="btn btn-primary">Accept</a>
 </div>
+
+<style>
+    .detail-info {
+        padding: 4px 8px;
+        background-color: #EFEEEE;
+        border-radius: 8px;
+    }
+</style>

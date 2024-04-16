@@ -21,8 +21,12 @@ namespace StoreManagement.Controllers
         {
             var result = await _authService.Login(loginDTO);
 
+            if (result == null)
+            {
+                return Redirect("/auth/login");
+            }
 
-             switch(result.RoleId) {
+            switch (result.RoleId) {
                 case 1:
                     {
                         await CreateCookieAsync(result);
@@ -46,6 +50,24 @@ namespace StoreManagement.Controllers
         {
             return View();
         }
+
+        /*public IActionResult CheckCookie()
+        {
+            try
+            {
+                var username = User.Claims.FirstOrDefault().Value;
+                if (username == null)
+                {
+                    return Redirect();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Redirect("/auth/login");
+                return string.Empty;
+            }
+        }*/
 
         [HttpGet]
         public async Task<IActionResult> LogOut()

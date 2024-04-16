@@ -2,8 +2,6 @@
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IRepositorys;
 using StoreManagement.Interfaces.IServices;
-using StoreManagement.Models;
-using StoreManagement.Repository;
 
 namespace StoreManagement.Service
 {

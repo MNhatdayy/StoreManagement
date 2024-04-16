@@ -5,16 +5,10 @@
 
 // Nav JS
 const path = window.location.pathname;
-console.log(path);
-
 const navItem = document.querySelectorAll('.nav-item');
-console.log(navItem);
-
 navItem.forEach((item) => {
-    const href = item.childNodes[1].href;
-    if (href.includes(path)) {
-        console.log('true');
+    const href = item.childNodes[1].pathname;
+    if (href == path) {
         item.classList.add('active-item');
-    }
-    
+    }  
 })

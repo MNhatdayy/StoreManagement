@@ -50,16 +50,27 @@ namespace StoreManagement.Repository
             return menus;
         }
 
-        public async Task<List<Menu>> GetAll(bool incluDeleted = false)
+        public async Task<List<Menu>> GetAll(List<int> idStore, bool incluDeleted = false)
         {
-            if (!incluDeleted)
+            List<Menu> menu = new List<Menu>();
+            foreach (int StoreId in idStore)
             {
-                return await _context.Menus.Where(m => !m.IsDeleted).Include("Store").ToListAsync();
+                var temp = _context.Menus.FirstOrDefault(m => m.StoreId == StoreId);
+                if ( temp != null)
+                {
+                    menu.Add(temp);
+                }
+            }
+            if (menu.Count > 0)
+            {
+                return menu;
+
             }
             else
             {
-                return await _context.Menus.ToListAsync();
+                return null;
             }
+
         }
 
         public async Task<Menu> GetMenuByIdStore(int idStore, bool includeDeleted = false)

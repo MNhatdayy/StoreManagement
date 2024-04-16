@@ -27,7 +27,7 @@
     
         <div class="content">
         <div class="container mt-5 px-2"> 
-            <div class="table-responsive border-3">
+            <div class="table--wrapper border-3">
                     <table class="table table-responsive">
                         <thead>
                             <tr class="bg-light">
@@ -55,11 +55,11 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                       </div>
                                       <div class="modal-body">
-                                        Bạn có chắc chắn muốn xóa món ăn @category.Name không ?
+                                        Bạn có chắc chắn muốn xóa loại @category.Name không ?
                                       </div>
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                        <form action="/owner/cateogry/deleteconfirmed" method="post">
+                                        <form action="/owner/category/deleteconfirmed" method="post">
                                             <input value="@category.Id" name="id" class="d-none">
                                             <button type="submit" class="btn btn-primary-custom">Đồng ý</button>
                                         </form>

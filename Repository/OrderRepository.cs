@@ -121,5 +121,10 @@ namespace StoreManagement.Repository
             }
             return null;
         }
+
+        public Task<List<Order>> GetListOrder(List<int> idStore, bool incluDeleted = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,50 +4,31 @@
 @{
 }
 @model StoreManagement.DTO.InvoiceDTO
-<head>
-<title>Invoice Details</title>
-</head>
-<body>
-    <div class="container">
-        <h1>Invoice Details</h1>
 
-        <h2>Invoice Information</h2>
-        <table>
-            <tr>
-                <th>Invoice ID</th>
-                <td>@Model.Id</td>
-            </tr>
-            <tr>
-                <th>Invoice Date</th>
-                <td>@Model.PayTime.ToString("dd/MM/yyyy")</td>
-            </tr>
-            <tr>
-                <th>Charge</th>
-                <td>@Model.Charge</td>
-            </tr>
-            <!-- Add more invoice details here as needed -->
-        </table>
 
-        <h2>Order Information</h2>
-        <table>
-            <tr>
-                <th>Order ID</th>
-                <td>@ViewBag.Order.Id</td>
-            </tr>
-            <tr>
-                <th>Table ID</th>
-                <td>@ViewBag.Order.TableId</td>
-            </tr>
-            <!-- Add more order details here as needed -->
-        </table>
-
-        <h2>Order Details</h2>
+<div class="container pt-4">
+    <div class="row">
+        <div class="col-2 fw-bold">
+            Mã hóa đơn: @Model.Id
+        </div>
+        <div class="col-2 fw-bold">
+            Mã đơn đặt hàng: @ViewBag.Order.Id
+        </div>
+        <div class="col-2 fw-bold">
+            Số bàn: @ViewBag.order.TableId
+        </div>
+        <div class="col-4 fw-bold">
+            Ngày tạo: @Model.PayTime.ToString("HH:mm:ss dd-MM-yyyy")
+        </div>
+        
+        </div>
+        <h3 class="text-center mt-3">Chi tiết đơn đặt hàng</h3>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Food Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Tên món ăn</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,11 +40,26 @@
                         <td>@orderDetail.Price</td>
                     </tr>
                 }
+
             </tbody>
         </table>
-        <div>
-            <a href="/owner/managementinvoice/listinvoice" class="btn btn-success">Cancel</a>
+    <div class="d-flex justify-content-end invoice-total">
+        <div class="">
+            <div class=" fw-bold text-end">
+                Chi phí: @Model.Charge
+            </div>
+            <div class=" fw-bold text-end mt-2">
+                Tổng tiền: @Model.TotalPrice
+            <div>
+                    <a href="/owner/managementinvoice/listinvoice" class="btn btn-red-custom mt-2">Trở về</a>
+            </div>
         </div>
+        
     </div>
     
-</body>
+
+<style>
+    .invoice-total {
+    }
+
+</style>

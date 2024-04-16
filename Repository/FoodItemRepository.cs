@@ -47,21 +47,28 @@ namespace StoreManagement.Repository
             return foodItems;
         }
 
-        public async Task<List<FoodItem>> GetAll(bool incluDeleted = false)
+        public async Task<List<FoodItem>> GetAll(List<int> CategoryId, bool incluDeleted = false)
         {
-            if (!incluDeleted)
+            List<FoodItem> food = new List<FoodItem>();
+            foreach (int id in CategoryId)
             {
-                return await _context.FoodItems
-                    .Include("FoodCategory")
-                    .Where(m => !m.IsDeleted)
-                    .ToListAsync();
+                var temp = _context.FoodItems.Where(m => m.FoodCategoryId == id && m.IsDeleted == false).ToList();
+                if (temp != null)
+                {
+                    foreach (var item in temp)
+                    {
+                        food.Add(item);
+                    }
+                }
+            }
+            if (food.Count > 0)
+            {
+                return food;
             }
             else
             {
-                return await _context.FoodItems
-                    .Include("FoodCategory")
-                    .ToListAsync();
-            }
+                return null;
+            }          
         }
 
         public async Task<FoodItem> GetById(int id, bool incluDeleted = false)
@@ -69,19 +76,19 @@ namespace StoreManagement.Repository
             return await _context.FoodItems.Include("FoodCategory").FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<string> SaveImage(string url, IFormFile uFile)
+        public async Task<string> SaveImage(IFormFile uFile)
         {
+
             if (uFile != null && uFile.Length >0)
             {
-                var fileName = Path.GetFileName(uFile.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images",fileName);
-                using(var fileStream = new FileStream(filePath, FileMode.Create))
+                var savePath = Path.Combine("wwwroot/images/food", uFile.FileName); 
+                using (var fileStream = new FileStream(savePath, FileMode.Create))
                 {
                     await uFile.CopyToAsync(fileStream);
                 }
-                return "/images/food/donuong/" + url;
+                return "/images/food/" + uFile.FileName;
             }
-            return "/images/food/donuong/" + url; 
+            return null; 
         }
     }
 }

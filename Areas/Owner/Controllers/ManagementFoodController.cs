@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
-
+using System.Security.Claims;
 
 namespace StoreManagement.Areas.Owner.Controllers
 {
@@ -15,22 +15,41 @@ namespace StoreManagement.Areas.Owner.Controllers
     {
         public readonly IFoodItemService _foodItemService;
         public readonly IFoodCategoryService _foodCategoryService;
+        private readonly IAppUserService _appUserService;
+        private readonly IStoreService _storeService;
 
-        public ManagementFoodController(IFoodItemService foodItemService,IFoodCategoryService foodCategoryService)
+        public ManagementFoodController(IFoodItemService foodItemService, IFoodCategoryService foodCategoryService, IAppUserService appUserService, IStoreService storeService)
         {
-            this._foodItemService = foodItemService;
-            this._foodCategoryService = foodCategoryService;
+            _foodItemService = foodItemService;
+            _foodCategoryService = foodCategoryService;
+            _appUserService = appUserService;
+            _storeService = storeService;
         }
         public async Task<IActionResult> Index()
         {
-            var foodItem = await _foodItemService.GetAll();
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+
+            var countStore = await _storeService.GetStoresByUserId(userId);
+
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+
+            var foodItem = await _foodItemService.GetAll(foodCategory.Select(x => x.Id).ToList());
+
             return View(foodItem);
         }
         [HttpGet]               
         public async Task<IActionResult> Create()
         {
-            var foodCategories = await _foodCategoryService.GetAll();
-            ViewBag.FoodCategories = new SelectList(foodCategories, "Id", "Name");
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+
+            var countStore = await _storeService.GetStoresByUserId(userId);
+
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+
+            ViewBag.FoodCategories = new SelectList(foodCategory, "Id", "Name");
+           
             return View();
         }
 
@@ -39,24 +58,28 @@ namespace StoreManagement.Areas.Owner.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(foodItemDTO.ImageUrl != null)
+                if(uFile != null && uFile.Length > 0)
                 {
-                    var imagePath = await _foodItemService.SaveImages(foodItemDTO.ImageUrl,uFile);
+                    var imagePath = await _foodItemService.SaveImages(uFile);
                     foodItemDTO.ImageUrl = imagePath;
 
                 }
                 var result = await _foodItemService.Create(foodItemDTO);
                 if (result != null)
                 {
-                    return RedirectToAction("Index");
+                    return Redirect("/owner/managementfood/index");
                 }
                 else
                 {
                      ModelState.AddModelError(string.Empty, "Failed to create FoodItem.");
                 }
             }
-            var foodCategories = await _foodCategoryService.GetAll();
-            ViewBag.FoodCategories = new SelectList(foodCategories, "Id", "Name");
+
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+            var countStore = await _storeService.GetStoresByUserId(userId);
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+            ViewBag.FoodCategories = new SelectList(foodCategory, "Id", "Name");
             return View(foodItemDTO);
         }
 
@@ -68,8 +91,11 @@ namespace StoreManagement.Areas.Owner.Controllers
             {
                 return NotFound();
             }
-            var foodCategories = await _foodCategoryService.GetAll();
-            ViewBag.FoodCategories = new SelectList(foodCategories, "Id", "Name");
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+            var countStore = await _storeService.GetStoresByUserId(userId);
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+            ViewBag.FoodCategories = new SelectList(foodCategory, "Id", "Name");
             return View(foodItem);
         }
 
@@ -91,7 +117,7 @@ namespace StoreManagement.Areas.Owner.Controllers
                 }
                 if (uFile != null)
                 {
-                    var imagePath = await _foodItemService.SaveImages(foodItemDTO.ImageUrl, uFile);
+                    var imagePath = await _foodItemService.SaveImages(uFile);
                     foodItem.ImageUrl = imagePath;
                 }
                 foodItem.Name = foodItemDTO.Name;
@@ -99,10 +125,14 @@ namespace StoreManagement.Areas.Owner.Controllers
                 foodItem.Description = foodItemDTO.Description;
                 foodItem.FoodCategoryId = foodItemDTO.FoodCategoryId;
                 await _foodItemService.Edit(id,foodItem, uFile);
-                return RedirectToAction("Index");
+                return Redirect("/owner/managementfood/index");
+
             }
-            var foodCategories = await _foodCategoryService.GetAll();
-            ViewBag.FoodCategories = new SelectList(foodCategories,"Id","Name");
+            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            var user = await _appUserService.GetByIdAsync(userId);
+            var countStore = await _storeService.GetStoresByUserId(userId);
+            var foodCategory = await _foodCategoryService.GetAll(countStore.Select(x => x.Id).ToList());
+            ViewBag.FoodCategories = new SelectList(foodCategory, "Id", "Name");
             return View(foodItemDTO);
         }
 
@@ -122,7 +152,7 @@ namespace StoreManagement.Areas.Owner.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             await _foodItemService.Delete(id);
-            return RedirectToAction("Index");
+            return Redirect("/owner/managementfood/Index");
         }
     }
 }

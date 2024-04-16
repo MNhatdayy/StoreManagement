@@ -6,18 +6,23 @@
 }
 @model StoreManagement.DTO.MenuDTO
 
-<h2>Add New Menu</h2>
+<h2>Thêm mới menu</h2>
 
-<form asp-action="Create" method="post">
+<form action="/owner/managementmenu/create" method="post">
     <div class="form-group">
-        <label asp-for="StoreId"></label>
-        <input asp-for="StoreId" type="number" class="form-control" />
-        <span asp-validation-for="StoreId" class="text-danger"></span>
+        <label asp-for="@Model.StoreId">Tên quán: </label>
+        <select asp-for="@Model.StoreId" asp-items="ViewBag.List" class="form-control">
+            <option value="">Chọn quán</option>
+        </select>
+        <span asp-validation-for="@Model.StoreId" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a asp-controller="ManagementMenu" asp-action="Index">
-        <button type="button" class="btn btn-info">Return Menu</button>
-    </a>
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary-custom">Tạo</button>
+        <a href="/owner/managementmenu/index" class="btn btn-red-custom">
+            Trở về
+        </a>
+    </div>
+    
 </form>
 @section Scripts{
     @{

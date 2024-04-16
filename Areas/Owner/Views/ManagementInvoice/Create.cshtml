@@ -4,7 +4,7 @@
     ViewData["Title"] = "Order Details";
 }
 
-<div class="container">
+@* <div class="container">
     <h1>Order Details</h1>
 
     <div>
@@ -89,19 +89,93 @@
     </form>
     <a href="/Owner/ManagementInvoice" class="btn btn-primary">Back to Invoice</a>
 </div>
+ *@
+
+<div class="container mt-4">
+
+    <h3 class="text-center">Thông tin chi tiết đơn đặt hàng</h3>
+    <div class="order-detail mt-2">
+        <div class="detail-info">
+            <div class="row">
+                <div class="col-3 fw-bold">
+                    Mã đơn đặt hàng: @ViewBag.order.Id
+                </div>
+                <div class="col-3 fw-bold">
+                    Số bàn: @ViewBag.order.TableId
+                </div>
+
+                <div class="col-3 fw-bold">
+                    Ngày tạo: @ViewBag.order.Created.ToString("HH:mm:ss dd-MM-yyyy")
+                </div>
+        </div>
+        <div class="row mt-4">
+                <div class="detail-item mt-4 col-9">
+                    <h3>Danh sách món ăn</h3>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tên món ăn</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var orderDetail in ViewBag.OrderDetail)
+                            {
+                                <tr style="height: 40px;">
+                                    <td>@orderDetail.FoodItem.Name</td>
+                                    <td>@orderDetail.Quantity</td>
+                                    <td>@orderDetail.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="detail-actions col-3 mt-4">
+                    <div class=" border border-secondary p-3 rounded-3">
+                        <form action="/owner/ManagementInvoice/CompleteInvoice" method="post">
+                            <div class="form-group">
+                                <input hidden type="number" id="orderId" name="OrderId" value="@ViewBag.order.Id" class="form-control" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Charge">Phụ phí</label>
+                                <input type="number" asp-for="Charge" class="form-control" id="changeValue" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Note">Ghi chú</label>
+                                <input type="text" asp-for="Note" class="form-control" />
+                            </div>
+                            <div class="fw-bold">
+                                Total Price: <span id="total">@ViewBag.order.TotalPrice</span>
+                            </div>
+                            <div class="d-flex gap-3 mt-2">
+                                <button type="submit" class="btn btn-primary-custom">Xác nhận</button>
+                                <a href="/Owner/ManagementInvoice" class="btn btn-secondary">Trở về</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+        </div>
+       
+            
+    </div>
+</div>
+
 
 <script>
-    function calculateTotalPrice() {
 
-        var chargeInput = document.getElementById('chargeInput').value;
 
-        var chargeAmount = parseFloat(chargeInput) || 0;
-        chargeAmount = chargeAmount + @ViewBag.order.TotalPrice;
-        document.getElementById('totalPrice').textContent = chargeAmount.toFixed(2);
+    var chargeInput = document.getElementById('changeValue');
+    chargeInput.addEventListener('change', function (event) {
+            let chargeValue = event.target.value;
+        console.log(chargeValue);
+            let chargeAmount = parseFloat(chargeValue) || 0;
+            chargeAmount = chargeAmount + @ViewBag.order.TotalPrice;
+            document.getElementById('total').innerText = chargeAmount;
+    });
 
-    }
-
-    
-    
 </script>
 

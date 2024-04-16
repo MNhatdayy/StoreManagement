@@ -9,16 +9,21 @@
   <ItemGroup>
     <Compile Remove="Areas\Owner\Data\**" />
     <Compile Remove="Areas\Owner\Models\**" />
+    <Compile Remove="wwwroot\images\NewFolder\**" />
     <Content Remove="Areas\Owner\Data\**" />
     <Content Remove="Areas\Owner\Models\**" />
+    <Content Remove="wwwroot\images\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Owner\Data\**" />
     <EmbeddedResource Remove="Areas\Owner\Models\**" />
+    <EmbeddedResource Remove="wwwroot\images\NewFolder\**" />
     <None Remove="Areas\Owner\Data\**" />
     <None Remove="Areas\Owner\Models\**" />
+    <None Remove="wwwroot\images\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="BarCode" Version="2024.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.27" />
@@ -36,8 +41,10 @@
 
   <ItemGroup>
 
-    <Folder Include="wwwroot\images\food\lau\" />
-    <Folder Include="wwwroot\images\food\nuoc\" />
+    <Folder Include="upload\image\QRTable\" />
+
+    <Folder Include="wwwroot\images\food\" />
+    <Folder Include="wwwroot\images\QRTable\" />
 
   </ItemGroup>
 

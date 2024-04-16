@@ -17,8 +17,8 @@ CRUD bàn của quán *@
     ViewData["Title"] = "Table";
 }
 <div class="container py-4 px-4 h-100">
-    <div class="table-wrapper w-100">
-        <div class="d-flex justify-content-between">
+    <div class="table-wrapper w-100 ">
+        <div class="d-flex justify-content-between ">
 
             <p class="fw-bold fs-3">Danh sách bàn</p>
             <div class="table-action d-flex align-items-center gap-2">
@@ -39,14 +39,19 @@ CRUD bàn của quán *@
             </div>
 
         </div>
-
+        <div class="table-container">
         <div class="row">
             @foreach (var table in Model)
             {
-                <div class="col-lg-2 mt-4">
-                    <div class="item-table">
-                        <div class="item-table--img">
-                            <i class='bx bx-archive'></i>
+                    <div class="col-lg-4 mt-4">
+                        <div class="item-table">
+                            <div class="item-table--img">
+                                @{
+                                    @using System.IO;
+
+                                    var filename = "/images/QRTable/" + @table.Id + ".png";
+                                    <img src=@filename width="50%">
+                            }
                         </div>
                         <div class="item-table--info">
                             <p>Tên quán: @table.Store?.StoreName</p>
@@ -92,12 +97,13 @@ CRUD bàn của quán *@
             }
         </div>
     </div>
+    </div>
 
 </div>
 
 <style>
     .item-table {
-        height: 250px;
+        height: 300px;
         border: 1px solid black;
         border-radius: 8px;
         display: flex;
@@ -110,7 +116,7 @@ CRUD bàn của quán *@
         }
 
     .item-table--img {
-        height: 50%;
+        height: 60%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -127,5 +133,9 @@ CRUD bàn của quán *@
         border-top: 1px solid var(--blue-gradient);
         padding-top: 12px;
         text-align: center;
+    }
+    .table-container .row {
+        height: 550px;
+        overflow-y: scroll;
     }
 </style>

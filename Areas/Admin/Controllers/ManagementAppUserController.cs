@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using StoreManagement.DTO;
 using StoreManagement.Interfaces.IServices;
 using StoreManagement.Models;
-using System.Security.Claims;
 
 namespace StoreManagement.Areas.Admin.Controllers
 {

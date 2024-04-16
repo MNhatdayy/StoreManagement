@@ -4,71 +4,86 @@
 @{
 }
 @model StoreManagement.Models.ShoppingCart
-<h2>Your Cart</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Food</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Note</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Items)
-        {
-            <tr>
-                <td>@item.NameFood</td>
-                <td>@item.Price</td>
-                <td>
-                    <input type="number" class="input-quantity-food" data-food-id="@item.IdFood" value="@item.Quantity" min="1" max="999" />
-                </td>
-                <td class="total-price-food" id="total-@item.IdFood">@(item.Price * item.Quantity)</td>
-                <td>
-                    <input type="text" class="input-notes" name="notes" value="@item.Notes" data-food-id="@item.IdFood" placeholder="Notes..." />
-                </td>
-                <td>
-                    <form action="/customer/order/deletefromcart" name="foodId" value="@item.IdFood" method="get">
-                        <input type="hidden" name="foodId" value="@item.IdFood" />
-                        <button type="submit">Remove</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        <tr>
-            <td colspan="5">
-                <form action="/customer/order/submitorder" method="post">
-                    <button type="submit">Submit</button>
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div style="display: flex">
-    <a href="/customer/order/@ViewBag.idStore/@ViewBag.idTable">Back To Orders</a>
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h5>Giỏ hàng của bạn</h5>
+        <div class="d-flex gap-2">
+            <form action="/customer/order/submitorder" method="post">
+                <input type="hidden" name="idStore" value="@ViewBag.idStore" />
+                <input type="hidden" name="idTable" value="@ViewBag.idTable" />
+                <button class="btn btn-primary-custom" type="submit">Xác nhận</button>
+            </form>
+            <a class="btn btn-red-custom" href="/customer/order/@ViewBag.idStore/@ViewBag.idTable">Trở về</a>
+        </div>
+    </div>
+    
+    <div class="order-info">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Note</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.NameFood</td>
+                        <td>@item.Price</td>
+                        <td>
+                            <input type="number" class="input-quantity-food" data-food-id="@item.IdFood" value="@item.Quantity" min="1" max="999" />
+                        </td>
+                        <td>
+                            <input type="text" class="input-notes" name="notes" value="@item.Notes" data-food-id="@item.IdFood" placeholder="Notes..." />
+                        </td>
+                        <td>
+                            <form action="/customer/order/deletefromcart" name="foodId" value="@item.IdFood" method="get">
+                                <input type="hidden" name="foodId" value="@item.IdFood" />
+                                <button class="btn btn-red-custom" type="submit">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+<style>
+    * {
+        font-size: 10px;
+    }
+    input {
+        height: 20px;
+    }
+    button {
+        min-width: 60px;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function () {
-        $('.input-notes').change(function () {
+        $('.input-quantity-food').change(function () {
             var foodId = $(this).data('food-id');
-            var notes = $(this).val();
+            var quantity = $(this).val();
 
             $.ajax({
-                url: '/customer/order/submitorder',
+                url: '/customer/order/UpdateCart',
                 type: 'POST',
                 data: {
                     foodId: foodId,
-                    notes: notes
+                    quantity: quantity,
                 },
                 success: function (response) {
-                    console.log('Đã cập nhật ghi chú thành công!');
+                    console.log('Thanh cong');
                 },
                 error: function (error) {
-                    console.error('Lỗi khi cập nhật ghi chú:', error);
+                    console.error('Lỗi khi cập nhật:', error);
                 }
             });
         });

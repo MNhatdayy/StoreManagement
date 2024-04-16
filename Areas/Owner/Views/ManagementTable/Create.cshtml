@@ -7,21 +7,25 @@
 @model StoreManagement.DTO.TableDTO
 @using Microsoft.AspNetCore.Mvc.Rendering
 
-@ViewBag.List
-<form href="/owner/managementtable/create" method="post">
-    <div class="form-group">
-        <label asp-for="StoreID">Tên quán: </label>
-        <select asp-for="StoreID" asp-items="ViewBag.List" class="form-control">
-            <option value="">Chọn quán</option>
-        </select>
-        <span asp-validation-for="StoreID" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Tạo</button>
-    <a class="btn btn-red-custom" href="/owner/managementtable/index">Trở về</a>
+<div class="container py-4">
+    <form action="/owner/managementtable/Create" method="post">
+        <div class="form-group">
+            <label asp-for="StoreID">Tên quán: </label>
+            <select asp-for="StoreID" asp-items="ViewBag.List" class="form-control">
+                <option value="">Chọn quán</option>
+            </select>
+            <span asp-validation-for="StoreID" class="text-danger"></span>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Tạo</button>
+            <a class="btn btn-red-custom" href="/owner/managementtable/index">Trở về</a>
+        </div>
+    </form>
+</div>
 
-</form>
+
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial"/>
+        <partial name="_ValidationScriptsPartial" />
     }
 }
