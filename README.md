@@ -5,6 +5,7 @@
 ## Công nghệ sử dụng:
 
 -   .NET Core Web MVC
+-   Bootstrap 5 
 
 ## Thành viên nhóm
 
